@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toy Brigade - Where Magic and Play Come Together!</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@400;700&display=swap">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Comic Neue', cursive;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f9f4ff;
+            color: #5a2d82;
+        }
+
+        /* Castle Header */
+        header {
+            position: relative;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding-bottom: 20px;
+            border-bottom: 5px solid #ffcc00;
+        }
+
+        .castle-top {
+            display: flex;
+            justify-content: space-between;
+            height: 50px;
+        }
+
+        .castle-tower {
+            background-color: #ff9966;
+            width: 60px;
+            height: 60px;
+            position: relative;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .castle-tower:before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            background-color: #ff9966;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .castle-tower.left {
+            left: 20px;
+        }
+
+        .castle-tower.right {
+            right: 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 36px;
+            font-family: 'Fredoka One', cursive;
+            color: #5a2d82;
+            text-shadow: 2px 2px 0 #ffcc00;
+        }
+
+        .logo p {
+            margin: 0;
+            font-size: 14px;
+            color: #5a2d82;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #5a2d82;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #ffcc00;
+            transform: scale(1.1);
+        }
+
+        nav ul li a span {
+            margin-right: 5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #5a2d82;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 8px dotted #ff9966;
+        }
+
+        .hero-content h2 {
+            font-size: 48px;
+            margin: 0;
+            font-family: 'Fredoka One', cursive;
+            text-shadow: 3px 3px 0 #ffcc00;
+        }
+
+        .hero-content p {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background-color: #ff6600;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 5px 0 #cc5200;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 0 #cc5200;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 0 #cc5200;
+        }
+
+        .floating-toys {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .toy {
+            position: absolute;
+            font-size: 40px;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .balloon { top: 20%; left: 10%; animation-delay: 0s; }
+        .car { top: 60%; left: 80%; animation-delay: 1s; }
+        .teddy { top: 30%; left: 85%; animation-delay: 2s; }
+        .plane { top: 70%; left: 15%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Categories Section */
+        .categories {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .categories h2 {
+            font-size: 42px;
+            margin-bottom: 40px;
+            font-family: 'Fredoka One', cursive;
+            color: #ff6600;
+            text-shadow: 2px 2px 0 #ffcc00;
+        }
+
+        .category-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .category-item {
+            width: 250px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #ffcc00;
+        }
+
+        .category-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .category-item:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ff9966, #ff6600, #ffcc00, #ff9966);
+            background-size: 200% auto;
+            animation: rainbow 3s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .category-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .category-item img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 3px solid #f0f0f0;
+        }
+
+        .category-item h3 {
+            font-size: 24px;
+            margin: 10px 0;
+            font-family: 'Fredoka One', cursive;
+            color: #5a2d82;
+        }
+
+        .category-item p {
+            margin: 0;
+            color: #777;
+        }
+
+        /* Special Offers */
+        .offers {
+            margin: 40px 0;
+        }
+
+        .offer-ribbon {
+            background: linear-gradient(90deg, #ff9966, #ff6600);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            transform: rotate(-1deg);
+            box-shadow: 0 5px 15px rgba(255,102,0,0.3);
+        }
+
+        .offer-content {
+            font-size: 20px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #5a2d82 0%, #3b1d5a 100%);
+            color: white;
+            padding: 40px 0 0;
+            position: relative;
+        }
+
+        footer:before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 0L0 0 0 7.99C150 30 350 50 600 50 850 50 1050 30 1200 7.99L1200 0z" fill="%23f9f4ff"/></svg>');
+            background-size: cover;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section {
+            width: 300px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            font-family: 'Fredoka One', cursive;
+            color: #ffcc00;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ffcc00;
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2) rotate(10deg);
+            color: #ffcc00;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0,0,0,0.2);
+            margin-top: 30px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+            }
+            
+            .category-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-item {
+                width: 80%;
+            margin-bottom: 30px;
+            text-align: center;
+            padding: 15px;
+        }
+
+            .category-item img {
+                max-width: 80%;
+                margin: 0 auto 15px;
+                display: block;
+            }
+            
+            .hero-content h2 {
+                font-size: 36px;
+            }
+            
+            .hero-content p {
+                font-size: 18px;
+            }
+        }
+
+        /* Shop Button */
+        .shop-button {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .shop-btn {
+            background: linear-gradient(135deg, #ff6600, #ff9966);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 20px;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255,102,0,0.3);
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255,102,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with castle design -->
+    <header>
+        <div class="castle-top">
+            <div class="castle-tower left"></div>
+            <div class="castle-tower center"></div>
+            <div class="castle-tower right"></div>
+        </div>
+        <div class="header-content">
+            <div class="logo">
+                <h1>Toy Brigade</h1>
+                <p>Where Magic and Play Come Together!</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span>🏠</span> Home</a></li>
+                    <li><a href="shop.html"><span>🛒</span> Shop</a></li>
+                    <li><a href="#"><span>🧸</span> Categories</a></li>
+                    <li><a href="#"><span>📞</span> Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section with floating toys -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Welcome to the Magical Toy Brigade!</h2>
+            <p>Discover endless fun and imagination for kids of all ages!</p>
+            <a href="shop.html" class="btn">Shop Now <span>🛒</span></a>
+        </div>
+        <div class="floating-toys">
+            <div class="toy balloon">🎈</div>
+            <div class="toy car">🏎️</div>
+            <div class="toy teddy">🧸</div>
+            <div class="toy plane">✈️</div>
+        </div>
+    </section>
+
+    <!-- Product Categories with playful cards -->
+    <section class="categories">
+        <h2>Explore Our Magical Toy Lands</h2>
+        <div class="category-list">
+            <div class="category-item">
+                <div class="category-icon">🦸</div>
+                <img src="https://placehold.co/300x200/ffcc00/5a2d82?text=Action+Figures" alt="Action Figures">
+                <h3>Hero Headquarters</h3>
+                <p>Action Figures & Superheroes</p>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">🧱</div>
+                <img src="https://placehold.co/300x200/ffcc00/5a2d82?text=Building+Blocks" alt="Building Blocks">
+                <h3>Builder's Paradise</h3>
+                <p>Blocks & Construction Sets</p>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">👸</div>
+                <img src="https://placehold.co/300x200/ffcc00/5a2d82?text=Dolls" alt="Dolls">
+                <h3>Enchanted Dollhouse</h3>
+                <p>Dolls & Accessories</p>
+            </div>
+            <div class="category-item">
+                <div class="category-icon">🧩</div>
+                <img src="https://placehold.co/300x200/ffcc00/5a2d82?text=Puzzles" alt="Puzzles">
+                <h3>Puzzle Palace</h3>
+                <p>Brain Teasers & Games</p>
+            </div>
+        </div>
+        
+        <div class="shop-button">
+            <a href="shop.html" class="shop-btn">Visit Our Shop 🛒</a>
+        </div>
+    </section>
+
+    <!-- Special Offers Banner -->
+    <section class="offers">
+        <div class="offer-ribbon">
+            <div class="offer-content">
+                <span>🎉</span> TODAY'S SPECIAL: Free magical unicorn with purchases over $50! <span>🦄</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with playful design -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Toy Brigade</h3>
+                <p>We've been spreading joy and imagination since 2010!</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="shop.html">🌟 New Arrivals</a></li>
+                    <li><a href="shop.html">🎁 Gift Finder</a></li>
+                    <li><a href="#">📦 Track Order</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Join Our Kingdom</h3>
+                <div class="social-icons">
+                    <a href="#">📘</a>
+                    <a href="#">📸</a>
+                    <a href="#">🐦</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Toy Brigade. All rights reserved. Made with ❤️ and 🎠</p>
+        </div>
+    </footer>
+</body>
+</html>
