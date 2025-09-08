@@ -1,11 +1,17 @@
+<?php
+include "connection.php";
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toy Brigade | Home</title>
-
+  <title>Action & Adventure Toys | Toy Brigade</title>
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -14,12 +20,11 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/navbar.css">
-
+  <link rel="stylesheet" href="css/cart.css">
 </head>
 
 <body>
@@ -29,6 +34,8 @@
     style="z-index: 2000;">
     <div class="pastel-spinner"></div>
   </div>
+
+
 
 
   <!-- Navbar -->
@@ -198,6 +205,7 @@
           <li class="nav-item">
             <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
+
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
               <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
@@ -207,6 +215,7 @@
               </button>
             </form>
           </li>
+
         </ul>
 
 
@@ -219,6 +228,7 @@
             id="accountDropdownMenu">
             <!-- Sliding container -->
             <div class="form-slider d-flex" style="width:200%; transition: transform 0.4s ease;">
+
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
@@ -264,7 +274,6 @@
                 </form>
               </div>
 
-
             </div>
           </div>
         </li>
@@ -274,134 +283,101 @@
   </nav>
 
 
-
-  <!-- Hero Carousel -->
-  <section id="heroCarousel" class="carousel slide hero" data-bs-ride="carousel" data-bs-interval="4000">
-    <!-- Indicators -->
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"
-        aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-
-    <!-- Slides -->
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="images/baby-playing.svg" class="d-block w-100" alt="Toy Image 1">
-      </div>
-      <div class="carousel-item">
-        <img src="images/kids-playing-toys.svg" class="d-block w-100" alt="Toy Image 2">
-      </div>
-      <div class="carousel-item">
-        <img src="images/toy-store.svg" class="d-block w-100" alt="Toy Image 3">
-      </div>
-    </div>
-
-    <!-- Overlay text -->
-    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-      <h1 class="fw-bold hero-title">Welcome to Toy Brigade 🎠</h1>
-      <p class="lead">A proudly Filipino toy brand where imagination meets the imaginary. Fun has no age limit!</p>
-      <a href="#" class="btn btn-pastel btn-lg mt-3">Shop Now</a>
-    </div>
-
-    <!-- Prev/Next controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
+  <!-- Hero Section -->
+  <section class="hero d-flex flex-column justify-content-center align-items-center text-center py-5">
+    <h1 class="hero-title splice">⚔️ Action & Adventure Toys</h1>
+    <p class="text-muted">Pick a subcategory to explore and start shopping!</p>
   </section>
 
+  <!-- Subcategories and Products -->
+  <section class="container py-5">
 
-  <!-- About / Mission (Full-Height with Dynamic Layout) -->
-  <section class="mission-section d-flex align-items-center" style="min-height: 100vh; background-color: #fffafc;">
-    <div class="container">
-      <div class="row align-items-center">
-
-        <!-- Text Column -->
-        <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-          <h2 class="fw-bold section-title display-4">Our Mission</h2>
-          <p class="lead mb-3">
-            Toy Brigade is a proudly Filipino toy brand that sparks imagination, creativity, and joy for all ages.
-            From educational toys for toddlers to collectible figures for enthusiasts, we bring playful experiences to
-            life.
-          </p>
-          <p class="lead mb-3">
-            We curate high-quality products blending learning, adventure, and nostalgia. Our goal is to connect a
-            community
-            of toy lovers—young and old—through purposeful and meaningful play.
-          </p>
-          <p class="fw-semibold">
-            "To empower creativity and connection with a thoughtfully selected collection of toys that enrich play for
-            everyone."
-          </p>
-        </div>
-
-        <!-- Image Column (Collage, Magazine-Style) -->
-        <div class="col-lg-6 d-flex flex-wrap justify-content-center gap-3 mission-images-wrapper">
-          <img src="./images/pup-toy-baby.svg" alt="Toy Play" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-2.png" alt="Learning Toy" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-3.png" alt="Collectibles" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-4.png" alt="Adventure" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Explore Categories -->
-  <section class="explore-categories position-relative py-5" style="background-color: #fffafc;">
-    <div class="container">
-      <h2 class="text-center mb-2 fw-bold section-title">Explore Categories</h2>
-      <p class="text-center mb-5 lead">
-        Discover our curated toy collections, crafted to spark creativity, learning, and fun for every age.
-      </p>
-
-      <div class="row g-4 position-relative category-wrapper">
-
-        <!-- Featured Category -->
-        <div class="col-lg-7 featured-wrapper">
-          <div class="card h-100 text-center shadow category-card featured-card">
-            <img src="images/baby-playing.svg" class="card-img-top" alt="Early Development Toys">
-            <div class="card-body">
-              <h5 class="card-title display-6">Early Development Toys</h5>
-              <p class="card-text">Fun and educational toys for toddlers to spark curiosity and learning.</p>
-              <a href="#" class="btn btn-pastel btn-lg">Browse</a>
+    <!-- Action Figures & Superheroes -->
+    <h2 class="mb-4 splice-text">Action Figures & Superheroes</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card category-card shadow">
+          <img src="images/products/ironman.jpg" class="card-img-top" alt="Iron Man">
+          <div class="card-body text-center">
+            <h5 class="card-title">Marvel Avengers Iron Man</h5>
+            <p class="price">$19.99</p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-pastel add-to-cart" data-product="Iron Man" data-price="19.99">Add to Cart</button>
+              <button class="btn btn-outline-secondary">View Details</button>
             </div>
           </div>
         </div>
-
-        <!-- Smaller Categories -->
-        <div class="col-lg-5 d-flex flex-column justify-content-between small-cards-wrapper">
-
-          <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/iron-man-figure.svg" class="card-img-top" alt="Action & Adventure Toys">
-            <div class="card-body">
-              <h5 class="card-title">Action & Adventure Toys</h5>
-              <a href="#" class="btn btn-pastel">Browse</a>
-            </div>
-          </div>
-
-          <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/collectors.jpg" class="card-img-top" alt="Collector’s Vault">
-            <div class="card-body">
-              <h5 class="card-title">Collector’s Vault</h5>
-              <a href="#" class="btn btn-pastel">Browse</a>
-            </div>
-          </div>
-
-        </div>
-
       </div>
+      <!-- Add 4 more action figures here -->
+    </div>
+
+    <!-- Vehicles & Playsets -->
+    <h2 class="mt-5 mb-4 splice-text">Vehicles & Playsets</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card category-card shadow">
+          <img src="images/products/hotwheels-track.jpg" class="card-img-top" alt="Hot Wheels Track">
+          <div class="card-body text-center">
+            <h5 class="card-title">Hot Wheels Super Track</h5>
+            <p class="price">$29.99</p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-pastel add-to-cart" data-product="Hot Wheels Super Track" data-price="29.99">Add to
+                Cart</button>
+              <button class="btn btn-outline-secondary">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add 4 more vehicles/playsets here -->
+    </div>
+
+    <!-- Outdoor & Active Toys -->
+    <h2 class="mt-5 mb-4 splice-text">Outdoor & Active Toys</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card category-card shadow">
+          <img src="images/products/nerf-blaster.jpg" class="card-img-top" alt="Nerf Blaster">
+          <div class="card-body text-center">
+            <h5 class="card-title">Nerf Elite Blaster</h5>
+            <p class="price">$24.99</p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-pastel add-to-cart" data-product="Nerf Blaster" data-price="24.99">Add to
+                Cart</button>
+              <button class="btn btn-outline-secondary">View Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add 4 more outdoor toys here -->
     </div>
   </section>
+
+  <!-- Cart Button -->
+  <button class="btn btn-pastel cart-btn position-fixed" style="bottom:20px; right:20px;" data-bs-toggle="modal"
+    data-bs-target="#cartModal">
+    🛒 Cart (<span id="cart-count">0</span>)
+  </button>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">🛒 Your Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="cartItems">
+          <p>Your cart is empty.</p>
+        </div>
+        <div class="modal-footer cart-footer">
+          <h5>Total: <span id="cartTotal">₱0</span></h5>
+          <button class="btn btn-success">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- Footer -->
   <footer class="footer py-5 bg-pastel">
@@ -458,7 +434,9 @@
   </footer>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/cart.js"></script>
   <script src="./js/main.js"></script>
 </body>
 

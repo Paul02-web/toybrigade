@@ -1,3 +1,10 @@
+<?php
+include "connection.php";
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,19 +283,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+                        <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+                        <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./cart.html"><span class="me-1">🛒</span>Cart <span class="cart-count badge bg-pastel text-dark">0</span></a>
+                        <a class="nav-link" href="./cart.php"><span class="me-1">🛒</span>Cart <span class="cart-count badge bg-pastel text-dark">0</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#"><span class="me-1">📋</span>Checkout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+                        <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
                     </li>
                 </ul>
             </div>
@@ -323,7 +330,7 @@
             <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
             <h3>Your cart is empty</h3>
             <p class="text-muted">Browse our collection and add some toys to your cart!</p>
-            <a href="./shop.html" class="btn btn-pastel">Continue Shopping</a>
+            <a href="./shop.php" class="btn btn-pastel">Continue Shopping</a>
         </div>
         
         <div id="checkoutContent">
@@ -440,8 +447,8 @@
             <p>Order ID: <strong id="orderId"></strong></p>
             <p>Estimated delivery: <strong id="deliveryDate"></strong></p>
             <div class="mt-4">
-                <a href="./shop.html" class="btn btn-pastel me-3">Continue Shopping</a>
-                <a href="./index.html" class="btn btn-outline-primary">Back to Home</a>
+                <a href="./shop.php" class="btn btn-pastel me-3">Continue Shopping</a>
+                <a href="./index.php" class="btn btn-outline-primary">Back to Home</a>
             </div>
         </div>
     </div>
@@ -457,10 +464,10 @@
                 <div class="col-md-3 text-center text-md-start">
                     <h5 class="footer-title">Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="./index.html" class="footer-link">Home</a></li>
-                        <li><a href="./shop.html" class="footer-link">Shop</a></li>
+                        <li><a href="./index.php" class="footer-link">Home</a></li>
+                        <li><a href="./shop.php" class="footer-link">Shop</a></li>
                         <li><a href="#" class="footer-link">Categories</a></li>
-                        <li><a href="./contact.html" class="footer-link">Contact</a></li>
+                        <li><a href="./contact.php" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 text-center text-md-start">

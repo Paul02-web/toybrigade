@@ -1,3 +1,9 @@
+<?php
+include "connection.php";
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -321,16 +327,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+                        <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+                        <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#"><span class="me-1">📊</span>Admin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+                        <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><span class="me-1">👤</span>Logout</a>
@@ -654,10 +660,10 @@
                 <div class="col-md-3 text-center text-md-start">
                     <h5 class="footer-title">Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="./index.html" class="footer-link">Home</a></li>
-                        <li><a href="./shop.html" class="footer-link">Shop</a></li>
+                        <li><a href="./index.php" class="footer-link">Home</a></li>
+                        <li><a href="./shop.php" class="footer-link">Shop</a></li>
                         <li><a href="#" class="footer-link">Admin</a></li>
-                        <li><a href="./contact.html" class="footer-link">Contact</a></li>
+                        <li><a href="./contact.php" class="footer-link">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 text-center text-md-start">

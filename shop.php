@@ -1,3 +1,9 @@
+<?php
+include "connection.php";
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,10 +55,10 @@
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto playful-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+            <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
 
           <!-- Categories Dropdown -->
@@ -65,7 +71,7 @@
 
               <!-- Main Category 1 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-earlydev.html">👶 Early Development Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -199,7 +205,7 @@
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+            <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
@@ -314,7 +320,7 @@
             <img src="images/categories/sensory.jpg" class="card-img-top" alt="Sensory & Baby Play">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Sensory & Baby Play</h5>
-              <a href="./category-earlydev.html#sensory" class="btn btn-pastel">Explore</a>
+              <a href="./category-earlydev.php#sensory" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -325,7 +331,7 @@
             <img src="images/categories/stem.jpg" class="card-img-top" alt="STEM & Learning Toys">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">STEM & Learning</h5>
-              <a href="./category-earlydev.html#stem" class="btn btn-pastel">Explore</a>
+              <a href="./category-earlydev.php#stem" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -336,7 +342,7 @@
             <img src="images/categories/roleplay.jpg" class="card-img-top" alt="Pretend Play & Roleplay">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Pretend Play & Roleplay</h5>
-              <a href="./category-earlydev.html#pretendplay" class="btn btn-pastel">Explore</a>
+              <a href="./category-earlydev.php#pretendplay" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -351,7 +357,7 @@
             <img src="images/categories/action-figures.jpg" class="card-img-top" alt="Action Figures & Superheroes">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Action Figures & Superheroes</h5>
-              <a href="category-actionfigures.html" class="btn btn-pastel">Explore</a>
+              <a href="category-actionfigures.php" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -360,7 +366,7 @@
             <img src="images/categories/vehicles.jpg" class="card-img-top" alt="Vehicles & Playsets">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Vehicles & Playsets</h5>
-              <a href="category-vehicles.html" class="btn btn-pastel">Explore</a>
+              <a href="category-vehicles.php" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -369,7 +375,7 @@
             <img src="images/categories/outdoor.jpg" class="card-img-top" alt="Outdoor & Active Toys">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Outdoor & Active Toys</h5>
-              <a href="category-outdoor.html" class="btn btn-pastel">Explore</a>
+              <a href="category-outdoor.php" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -384,7 +390,7 @@
             <img src="images/categories/anime.jpg" class="card-img-top" alt="Anime & Pop Culture">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Anime & Pop Culture</h5>
-              <a href="category-anime.html" class="btn btn-pastel">Explore</a>
+              <a href="category-anime.php" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -393,7 +399,7 @@
             <img src="images/categories/retro.jpg" class="card-img-top" alt="Retro & Nostalgia">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Retro & Nostalgia</h5>
-              <a href="category-retro.html" class="btn btn-pastel">Explore</a>
+              <a href="category-retro.php" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>
@@ -402,7 +408,7 @@
             <img src="images/categories/filipino.jpg" class="card-img-top" alt="Filipino Collector's Exclusives">
             <div class="card-body text-center">
               <h5 class="card-title splice-text">Filipino Exclusives</h5>
-              <a href="category-filipino.html" class="btn btn-pastel">Explore</a>
+              <a href="category-filipino.php" class="btn btn-pastel">Explore</a>
             </div>
           </div>
         </div>

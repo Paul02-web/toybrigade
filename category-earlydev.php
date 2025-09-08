@@ -1,10 +1,17 @@
+<?php
+include "connection.php";
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Action & Adventure Toys | Toy Brigade</title>
+  <title>Early Development Toys | Toy Brigade</title>
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -13,11 +20,14 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/footer.css">
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/cart.css">
+
+  <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -27,7 +37,6 @@
     style="z-index: 2000;">
     <div class="pastel-spinner"></div>
   </div>
-
 
 
 
@@ -46,10 +55,15 @@
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto playful-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+            <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
+          </li> 
+          <li class ="nav-item"> 
+            <a href="checkout.php" class="btn btn-success position-fixed" style="bottom:70px; right:20px; z-index:1050;">
+    Go to Checkout
+</a>
           </li>
 
           <!-- Categories Dropdown -->
@@ -62,7 +76,7 @@
 
               <!-- Main Category 1 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-earlydev.html">👶 Early Development Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -107,7 +121,7 @@
 
               <!-- Main Category 2 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-action.html">⚔️ Action & Adventure Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-action.php">⚔️ Action & Adventure Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -150,7 +164,7 @@
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -196,9 +210,8 @@
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+            <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
               <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
@@ -208,7 +221,6 @@
               </button>
             </form>
           </li>
-
         </ul>
 
 
@@ -278,70 +290,107 @@
 
   <!-- Hero Section -->
   <section class="hero d-flex flex-column justify-content-center align-items-center text-center py-5">
-    <h1 class="hero-title splice">⚔️ Action & Adventure Toys</h1>
+    <h1 class="hero-title splice">Early Development Toys</h1>
     <p class="text-muted">Pick a subcategory to explore and start shopping!</p>
   </section>
 
   <!-- Subcategories and Products -->
   <section class="container py-5">
-
-    <!-- Action Figures & Superheroes -->
-    <h2 class="mb-4 splice-text">Action Figures & Superheroes</h2>
+    <!-- Sensory & Baby Play -->
+    <h2 class="mb-4 splice-text #sensory">Sensory & Baby Play</h2>
     <div class="row g-4">
+      <!-- Product 1 -->
       <div class="col-md-4">
         <div class="card category-card shadow">
-          <img src="images/products/ironman.jpg" class="card-img-top" alt="Iron Man">
+          <img src="images/products/fisher-price-puppy.jpg" class="card-img-top" alt="Fisher-Price Puppy">
           <div class="card-body text-center">
-            <h5 class="card-title">Marvel Avengers Iron Man</h5>
-            <p class="price">$19.99</p>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-pastel add-to-cart" data-product="Iron Man" data-price="19.99">Add to Cart</button>
-              <button class="btn btn-outline-secondary">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Add 4 more action figures here -->
-    </div>
-
-    <!-- Vehicles & Playsets -->
-    <h2 class="mt-5 mb-4 splice-text">Vehicles & Playsets</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card category-card shadow">
-          <img src="images/products/hotwheels-track.jpg" class="card-img-top" alt="Hot Wheels Track">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Wheels Super Track</h5>
+            <h5 class="card-title">Fisher-Price Laugh & Learn Smart Stages Puppy</h5>
             <p class="price">$29.99</p>
             <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-pastel add-to-cart" data-product="Hot Wheels Super Track" data-price="29.99">Add to
+              <button class="btn btn-pastel add-to-cart" data-product="Fisher-Price Puppy" data-price="29.99">Add to
                 Cart</button>
-              <button class="btn btn-outline-secondary">View Details</button>
+              <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#productModal1">View
+                Details</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Add 4 more vehicles/playsets here -->
-    </div>
-
-    <!-- Outdoor & Active Toys -->
-    <h2 class="mt-5 mb-4 splice-text">Outdoor & Active Toys</h2>
-    <div class="row g-4">
+      <!-- Product 2 -->
       <div class="col-md-4">
         <div class="card category-card shadow">
-          <img src="images/products/nerf-blaster.jpg" class="card-img-top" alt="Nerf Blaster">
+          <img src="images/products/vtech-walker.jpg" class="card-img-top" alt="VTech Walker">
           <div class="card-body text-center">
-            <h5 class="card-title">Nerf Elite Blaster</h5>
-            <p class="price">$24.99</p>
+            <h5 class="card-title">VTech Sit-to-Stand Learning Walker</h5>
+            <p class="price">$34.99</p>
             <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-pastel add-to-cart" data-product="Nerf Blaster" data-price="24.99">Add to
+              <button class="btn btn-pastel add-to-cart" data-product="VTech Walker" data-price="34.99">Add to
                 Cart</button>
-              <button class="btn btn-outline-secondary">View Details</button>
+              <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#productModal2">View
+                Details</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Add 4 more outdoor toys here -->
+      <!-- Product 3 -->
+      <div class="col-md-4">
+        <div class="card category-card shadow">
+          <img src="images/products/bright-starts-mat.jpg" class="card-img-top" alt="Bright Starts Mat">
+          <div class="card-body text-center">
+            <h5 class="card-title">Bright Starts Tummy Time Prop & Play Mat</h5>
+            <p class="price">$24.99</p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-pastel add-to-cart" data-product="Bright Starts Mat" data-price="24.99">Add to
+                Cart</button>
+              <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#productModal3">View
+                Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEM & Learning Toys -->
+    <h2 class="mt-5 mb-4 splice-text #stem">STEM & Learning Toys</h2>
+    <div class="row g-4">
+      <!-- Product 1 -->
+      <div class="col-md-4">
+        <div class="card category-card shadow">
+          <img src="images/products/fisher-price-puppy.jpg" class="card-img-top" alt="Fisher-Price Puppy">
+          <div class="card-body text-center">
+            <h5 class="card-title">Fisher-Price Laugh & Learn Smart Stages Puppy</h5>
+            <p class="price">$29.99</p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-pastel add-to-cart" data-product="Fisher-Price Puppy" data-price="29.99">Add to
+                Cart</button>
+              <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#productModal1">View
+                Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Placeholder: Add 5 products here -->
+    </div>
+
+    <!-- Pretend Play & Roleplay -->
+    <h2 class="mt-5 mb-4 splice-text #pretendplay">Pretend Play & Roleplay</h2>
+    <div class="row g-4">
+      <!-- Product 1 -->
+      <div class="col-md-4">
+        <div class="card category-card shadow">
+          <img src="images/products/fisher-price-puppy.jpg" class="card-img-top" alt="Fisher-Price Puppy">
+          <div class="card-body text-center">
+            <h5 class="card-title">Fisher-Price Laugh & Learn Smart Stages Puppy</h5>
+            <p class="price">$29.99</p>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-pastel add-to-cart" data-product="Fisher-Price Puppy" data-price="29.99">Add to
+                Cart</button>
+              <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#productModal1">View
+                Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Placeholder: Add 5 products here -->
     </div>
   </section>
 
@@ -359,17 +408,18 @@
           <h5 class="modal-title">🛒 Your Cart</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body" id="cartItems">
-          <p>Your cart is empty.</p>
+        <div class="modal-body">
+          <div id="cartItems"></div>
         </div>
-        <div class="modal-footer cart-footer">
-          <h5>Total: <span id="cartTotal">₱0</span></h5>
-          <button class="btn btn-success">Checkout</button>
+        <div class="modal-footer d-flex justify-content-between align-items-center">
+          <p class="fw-bold mb-0">Total: <span id="cartTotal">$0.00</span></p>
+          <button class="btn btn-checkout">Checkout</button>
+
         </div>
+
       </div>
     </div>
   </div>
-
 
 
   <!-- Footer -->
@@ -427,10 +477,122 @@
   </footer>
 
 
+
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/cart.js"></script>
-  <script src="./js/main.js"></script>
+  <script src="./js/main.js"></script> 
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load products from inventory
+    const allProducts = JSON.parse(localStorage.getItem('tb_products') || '[]');
+    // Filter for Early Development categories
+    const sensoryProducts = allProducts.filter(p => p.category === 'Sensory & Baby Play');
+    const stemProducts = allProducts.filter(p => p.category === 'STEM & Learning');
+    const pretendProducts = allProducts.filter(p => p.category === 'Pretend Play & Roleplay');
+
+    // Helper to render products
+    function renderProducts(products, containerSelector) {
+        const container = document.querySelector(containerSelector);
+        container.innerHTML = '';
+        products.forEach(product => {
+            const col = document.createElement('div');
+            col.className = 'col-md-4';
+            col.innerHTML = `
+                <div class="card category-card shadow">
+                  <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="price">$${product.price.toFixed(2)}</p>
+                    <div class="d-flex justify-content-center gap-2">
+                      <button class="btn btn-pastel add-to-cart" data-id="${product.id}">Add to Cart</button>
+                      <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#productModal${product.id}">View Details</button>
+                    </div>
+                  </div>
+                </div>
+            `;
+            container.appendChild(col);
+        });
+    }
+
+    renderProducts(sensoryProducts, '.row.g-4:nth-of-type(1)');
+    renderProducts(stemProducts, '.row.g-4:nth-of-type(2)');
+    renderProducts(pretendProducts, '.row.g-4:nth-of-type(3)');
+
+    // Cart logic
+    let cart = JSON.parse(localStorage.getItem('tb_cart') || '[]');
+    function saveCart() {
+        localStorage.setItem('tb_cart', JSON.stringify(cart));
+        document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    }
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            const product = allProducts.find(p => p.id === id);
+            if (!product) return;
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            saveCart();
+            alert(`${product.name} added to cart!`);
+        });
+    });
+
+    // Checkout button in cart modal
+    document.querySelector('.btn-checkout').addEventListener('click', function() {
+        window.location.href = 'checkout.php';
+    });
+
+    // Initial cart count
+    document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0); 
+     
+    // Search bar logic
+const searchForm = document.getElementById('navbarSearchForm');
+const searchInput = document.getElementById('navbarSearchInput');
+
+// Helper: Render all matching products in all categories
+function renderSearchResults(query) {
+    const allProducts = JSON.parse(localStorage.getItem('tb_products') || '[]');
+    const lowerQuery = query.trim().toLowerCase();
+    const results = allProducts.filter(p => p.name.toLowerCase().includes(lowerQuery));
+    // Choose where to display results (e.g., replace Sensory grid)
+    renderProducts(results, '.row.g-4:nth-of-type(1)');
+    // Optionally clear other categories
+    document.querySelector('.row.g-4:nth-of-type(2)').innerHTML = '';
+    document.querySelector('.row.g-4:nth-of-type(3)').innerHTML = '';
+}
+
+// Listen for search submit
+searchForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const query = searchInput.value;
+    if (query.length > 0) {
+        renderSearchResults(query);
+    } else {
+        // If empty, re-render all categories
+        renderProducts(sensoryProducts, '.row.g-4:nth-of-type(1)');
+        renderProducts(stemProducts, '.row.g-4:nth-of-type(2)');
+        renderProducts(pretendProducts, '.row.g-4:nth-of-type(3)');
+    }
+});
+
+// Optional: Show results as you type
+searchInput.addEventListener('input', function() {
+    const query = searchInput.value;
+    if (query.length > 0) {
+        renderSearchResults(query);
+    } else {
+        renderProducts(sensoryProducts, '.row.g-4:nth-of-type(1)');
+        renderProducts(stemProducts, '.row.g-4:nth-of-type(2)');
+        renderProducts(pretendProducts, '.row.g-4:nth-of-type(3)');
+    }
+});
+});
+</script> 
+
 </body>
 
 </html>
