@@ -1,7 +1,7 @@
 <?php
 include "connection.php";
-
-
+include_once "login.php";
+include_once "signup.php";
 ?>
 
 <!DOCTYPE html>
@@ -228,14 +228,15 @@ include "connection.php";
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
-                <form id="loginForm">
+                <!-- important to look at action and method, also connection is using ID (or name idfk) -->
+                <form id="loginForm" action="login.php" method="POST">  
                   <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                    <input type="email" class="form-control pastel-input" name="email" id="email" placeholder="Email" required>
                   </div>
                   <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
+                    <input type="password" class="form-control pastel-input" name="password" id="password" placeholder="Password" required>
                   </div>
-                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
                     <span class="loading-text d-none">Loading...</span>
                   </button>
@@ -249,18 +250,19 @@ include "connection.php";
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
-                <form id="signupForm">
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="First name"
+                <!-- important to look at action and method, also connection is using ID (or name idfk) -->
+                <form id="signupForm" action="signup.php" method="POST"> 
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="fname" id="fname" placeholder="First name" 
                       required></div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="Last name"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lname" id="lname" placeholder="Last name" 
                       required></div>
-                  <div class="mb-2"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-2"><input type="email" class="form-control pastel-input" name="email" id="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lytcard" id="lytcard"
                       placeholder="Loyalty card number (optional)"></div>
-                  <div class="mb-2"><input type="password" class="form-control pastel-input" placeholder="Password"
+                  <div class="mb-2"><input type="password" class="form-control pastel-input" name="password" id="password" placeholder="Password"
                       required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
                     <span class="loading-text d-none">Creating...</span>
                   </button>

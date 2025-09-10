@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-//form slider functionality
+// form slider functionality
 document.addEventListener("DOMContentLoaded", () => {
   const slider = document.querySelector(".form-slider");
   const showSignup = document.getElementById("showSignup");
@@ -71,53 +71,53 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // form button loading state
-document.addEventListener("DOMContentLoaded", () => {
-  function setLoadingState(button, isLoading) {
-    const defaultText = button.querySelector(".default-text");
-    const loadingText = button.querySelector(".loading-text");
+// document.addEventListener("DOMContentLoaded", () => {
+//   function setLoadingState(button, isLoading) {
+//     const defaultText = button.querySelector(".default-text");
+//     const loadingText = button.querySelector(".loading-text");
 
-    if (isLoading) {
-      defaultText.classList.add("d-none");
-      loadingText.classList.remove("d-none");
-      button.disabled = true;
-    } else {
-      defaultText.classList.remove("d-none");
-      loadingText.classList.add("d-none");
-      button.disabled = false;
-    }
-  }
+//     if (isLoading) {
+//       defaultText.classList.add("d-none");
+//       loadingText.classList.remove("d-none");
+//       button.disabled = true;
+//     } else {
+//       defaultText.classList.remove("d-none");
+//       loadingText.classList.add("d-none");
+//       button.disabled = false;
+//     }
+//   }
 
-  const loginForm = document.getElementById("loginForm");
-  const signupForm = document.getElementById("signupForm");
+  // const loginForm = document.getElementById("loginForm");
+  // const signupForm = document.getElementById("signupForm");
 
-  if (loginForm) {
-    loginForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const btn = this.querySelector("button[type=submit]");
-      setLoadingState(btn, true);
+//   if (loginForm) {
+//     loginForm.addEventListener("submit", function (e) {
+//       e.preventDefault();
+//       const btn = this.querySelector("button[type=submit]");
+//       setLoadingState(btn, true);
 
-      // TODO: replace with real backend call
-      setTimeout(() => {
-        setLoadingState(btn, false);
-        alert("Logged in! (simulate backend)");
-      }, 2000);
-    });
-  }
+//       // TODO: replace with real backend call
+//       setTimeout(() => {
+//         setLoadingState(btn, false);
+//         alert("Logged in! (simulate backend)");
+//       }, 2000);
+//     });
+//   }
 
-  if (signupForm) {
-    signupForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const btn = this.querySelector("button[type=submit]");
-      setLoadingState(btn, true);
+//   if (signupForm) {
+//     signupForm.addEventListener("submit", function (e) {
+//       e.preventDefault();
+//       const btn = this.querySelector("button[type=submit]");
+//       setLoadingState(btn, true);
 
-      // TODO: replace with real backend call
-      setTimeout(() => {
-        setLoadingState(btn, false);
-        alert("Account created! (simulate backend)");
-      }, 2000);
-    });
-  }
-});
+//       // TODO: replace with real backend call
+//       setTimeout(() => {
+//         setLoadingState(btn, false);
+//         alert("Account created! (simulate backend)");
+//       }, 2000);
+//     });
+//   }
+// });
 
 // Page loading spinner
 document.addEventListener("DOMContentLoaded", function () {
