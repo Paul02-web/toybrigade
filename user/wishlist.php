@@ -1,36 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toy Brigade | Home</title>
+  <meta charset="UTF-8" />
+  <title>Toy Brigade | Wishlist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap"
-    rel="stylesheet">
+  <!-- Bootstrap / Fonts / Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/shop.css" />
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
-
+  <style>
+    .wish-hero { background:#fff5f8; }
+    .wish-card { border-radius:18px; box-shadow:0 6px 16px rgba(255,182,193,.18); }
+    #wish-grid .card img { height: 180px; object-fit: cover; }
+    #wish-grid .card { border-radius:18px; box-shadow:0 6px 16px rgba(255,182,193,.18); }
+  </style>
 </head>
-
 <body>
-
-
-  <!-- Navbar -->
+  <!-- Navbar (kept from your theme) -->
   <nav class="navbar navbar-expand-lg navbar-light bg-pastel shadow-sm sticky-top playful-nav">
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo">
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -40,13 +38,13 @@
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto playful-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+            <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link active" aria-current="page" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
 
-          <!-- Categories Dropdown -->
+          <!-- Categories Dropdown (kept) -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -56,9 +54,8 @@
 
               <!-- Main Category 1 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-earlydev.html">👶 Early Development Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
-
                   <!-- Subcategory 1 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Sensory & Baby Play</a>
@@ -101,7 +98,7 @@
 
               <!-- Main Category 2 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-action.html">⚔️ Action & Adventure Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-action.php">⚔️ Action & Adventure Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -144,9 +141,8 @@
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
-
                   <!-- Subcategory 1 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Anime & Pop Culture</a>
@@ -158,7 +154,6 @@
                       <li><a class="dropdown-item" href="product-anime-5.html">Sailor Moon Wand</a></li>
                     </ul>
                   </li>
-
                   <!-- Subcategory 2 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Retro & Nostalgia</a>
@@ -170,7 +165,6 @@
                       <li><a class="dropdown-item" href="product-retro-5.html">Beanie Babies Collection</a></li>
                     </ul>
                   </li>
-
                   <!-- Subcategory 3 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Filipino Exclusives</a>
@@ -184,14 +178,26 @@
                   </li>
                 </ul>
               </li>
-
             </ul>
-          </li>
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+            <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
+
+          <!-- Cart icon with badge (theme-matched) -->
+<li class="nav-item d-flex align-items-center ms-2">
+  <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
+    <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
+    <!-- Red badge dot -->
+    <span id="tb-cart-badge-wrap" class="tb-badge-dot d-none" aria-hidden="true">
+      <span id="tb-cart-badge" class="visually-hidden">0</span>
+    </span>
+  </a>
+</li>
+
+
+          <!-- Navbar search (kept) -->
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
               <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
@@ -202,9 +208,8 @@
             </form>
           </li>
         </ul>
-        
 
-
+        <!-- Account dropdown (kept) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -212,18 +217,15 @@
           </a>
           <div class="dropdown-menu dropdown-menu-end p-4" style="min-width: 320px; overflow: hidden;"
             id="accountDropdownMenu">
-            <!-- Sliding container -->
             <div class="form-slider d-flex" style="width:200%; transition: transform 0.4s ease;">
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
                 <form id="loginForm">
-                  <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-3"><input type="email" class="form-control pastel-input" placeholder="Email" required>
                   </div>
-                  <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
-                  </div>
+                  <div class="mb-3"><input type="password" class="form-control pastel-input" placeholder="Password"
+                      required></div>
                   <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
                     <span class="default-text">Login</span>
                     <span class="loading-text d-none">Loading...</span>
@@ -234,7 +236,6 @@
                   </div>
                 </form>
               </div>
-
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
@@ -258,154 +259,43 @@
                   </div>
                 </form>
               </div>
-
-
             </div>
           </div>
         </li>
-
       </div>
     </div>
   </nav>
-
-
-
-  <!-- Hero Carousel -->
-  <section id="heroCarousel" class="carousel slide hero" data-bs-ride="carousel" data-bs-interval="4000">
-    <!-- Indicators -->
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"
-        aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-
-    <!-- Slides -->
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="images/baby-playing.svg" class="d-block w-100" alt="Toy Image 1">
-      </div>
-      <div class="carousel-item">
-        <img src="images/kids-playing-toys.svg" class="d-block w-100" alt="Toy Image 2">
-      </div>
-      <div class="carousel-item">
-        <img src="images/toy-store.svg" class="d-block w-100" alt="Toy Image 3">
-      </div>
-    </div>
-
-    <!-- Overlay text -->
-    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-      <h1 class="fw-bold hero-title">Welcome to Toy Brigade 🎠</h1>
-      <p class="lead">A proudly Filipino toy brand where imagination meets the imaginary. Fun has no age limit!</p>
-      <a href="#" class="btn btn-pastel btn-lg mt-3">Shop Now</a>
-    </div>
-
-    <!-- Prev/Next controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </section>
-
-
-  <!-- About / Mission (Full-Height with Dynamic Layout) -->
-  <section class="mission-section d-flex align-items-center" style="min-height: 100vh; background-color: #fffafc;">
-    <div class="container">
-      <div class="row align-items-center">
-
-        <!-- Text Column -->
-        <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-          <h2 class="fw-bold section-title display-4">Our Mission</h2>
-          <p class="lead mb-3">
-            Toy Brigade is a proudly Filipino toy brand that sparks imagination, creativity, and joy for all ages.
-            From educational toys for toddlers to collectible figures for enthusiasts, we bring playful experiences to
-            life.
-          </p>
-          <p class="lead mb-3">
-            We curate high-quality products blending learning, adventure, and nostalgia. Our goal is to connect a
-            community
-            of toy lovers—young and old—through purposeful and meaningful play.
-          </p>
-          <p class="fw-semibold">
-            "To empower creativity and connection with a thoughtfully selected collection of toys that enrich play for
-            everyone."
-          </p>
-        </div>
-
-        <!-- Image Column (Collage, Magazine-Style) -->
-        <div class="col-lg-6 d-flex flex-wrap justify-content-center gap-3 mission-images-wrapper">
-          <img src="./images/pup-toy-baby.svg" alt="Toy Play" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-2.png" alt="Learning Toy" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-3.png" alt="Collectibles" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-4.png" alt="Adventure" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-        </div>
-
-      </div>
+  <!-- Hero -->
+  <section class="wish-hero py-4">
+    <div class="container d-flex align-items-center justify-content-between">
+      <h1 class="section-title splice-text mb-0">My Wishlist</h1>
+      <div class="text-muted small">Saved items on this device</div>
     </div>
   </section>
 
+  <!-- Content -->
+  <main class="container my-4">
+    <div class="card wish-card p-3">
+      <div id="wish-empty" class="text-center py-5 d-none">
+        <p class="mb-3">Your wishlist is empty.</p>
+        <a href="shop.php" class="btn btn-pastel">Browse Products</a>
+      </div>
 
-  <!-- Explore Categories -->
-  <section class="explore-categories position-relative py-5" style="background-color: #fffafc;">
-    <div class="container">
-      <h2 class="text-center mb-2 fw-bold section-title">Explore Categories</h2>
-      <p class="text-center mb-5 lead">
-        Discover our curated toy collections, crafted to spark creativity, learning, and fun for every age.
-      </p>
-
-      <div class="row g-4 position-relative category-wrapper">
-
-        <!-- Featured Category -->
-        <div class="col-lg-7 featured-wrapper">
-          <div class="card h-100 text-center shadow category-card featured-card">
-            <img src="images/baby-playing.svg" class="card-img-top" alt="Early Development Toys">
-            <div class="card-body">
-              <h5 class="card-title display-6">Early Development Toys</h5>
-              <p class="card-text">Fun and educational toys for toddlers to spark curiosity and learning.</p>
-              <a href="#" class="btn btn-pastel btn-lg">Browse</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Smaller Categories -->
-        <div class="col-lg-5 d-flex flex-column justify-content-between small-cards-wrapper">
-
-          <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/iron-man-figure.svg" class="card-img-top" alt="Action & Adventure Toys">
-            <div class="card-body">
-              <h5 class="card-title">Action & Adventure Toys</h5>
-              <a href="#" class="btn btn-pastel">Browse</a>
-            </div>
-          </div>
-
-          <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/collectors.jpg" class="card-img-top" alt="Collector’s Vault">
-            <div class="card-body">
-              <h5 class="card-title">Collector’s Vault</h5>
-              <a href="#" class="btn btn-pastel">Browse</a>
-            </div>
-          </div>
-
-        </div>
-
+      <div class="row g-3" id="wish-grid">
+        <!-- wishlist items render here -->
       </div>
     </div>
-  </section>
+  </main>
 
-  <!-- Footer -->
+
+  <!-- Footer (kept) -->
   <footer class="footer py-5 bg-pastel">
     <div class="container">
       <div class="row g-4 justify-content-center">
 
         <!-- Logo & About -->
         <div class="col-md-3 footer-card text-center text-md-start">
-          <img src="images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
+          <img src="../images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
           <p class="small text-muted">Bringing joy and play to every child with toys made for fun and imagination.</p>
         </div>
 
@@ -451,25 +341,5 @@
       </div>
     </div>
   </footer>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/core.js"></script>
-  <script src="./assets/js/main.js"></script>
-  <script src="assets/js/adminlink.js"></script>
-
-          <script>
-            // CODE FOR THE REDIRECT CART
-            function redirectCart() {
-                // Check if the user is logged in
-                if(!"<?php echo isset($_SESSION["username"]) ? $_SESSION["username"] : '' ?>") {
-                    // Redirect the user to the login page
-                    alert("You are not logged in. Please log into your account and try again.");
-                    window.location.href = "users/index.php";
-                }
-            }
-        </script> 
-
 </body>
-
 </html>

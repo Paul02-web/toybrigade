@@ -18,12 +18,16 @@ if (isset($_POST['loginBtn'])) {
         // Verify the password (compare plain text with hashed password from database)
         if (password_verify($password, $user['password'])) {
             // Login successful - set session variables
-            $_SESSION['user_id'] = $user['customerID'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_name'] = $user['fname'] . ' ' . $user['lname'];
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['fname'] = $row['fname'];
+            $_SESSION['lname'] = $row['lname'];
+            
+            // session_unset();
+            // session_destroy();
+
             
             // Redirect to desired page
-            header("Location: login_test.php"); // Change to your desired page
+            header("Location: index.php"); // Change to your desired page
             exit;
         } else {
             // Invalid password

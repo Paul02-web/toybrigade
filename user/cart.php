@@ -1,49 +1,54 @@
 <?php
 include "connection.php";
+include "auth_session.php";
 
-
+// Get cart items for the logged-in user
+$cart_query = "SELECT p.productID, p.productName, p.price, p.prodImage, c.quantity 
+               FROM cart c 
+               JOIN products p ON c.productID = p.productID 
+               WHERE c.customerID = {$_SESSION['customerID']}";
+$cart_result = mysqli_query($conn, $cart_query);
+$cart_items = $cart_result ? mysqli_fetch_all($cart_result, MYSQLI_ASSOC) : [];
+$cart_count = count($cart_items);
+$subtotal = 0;
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Action & Adventure Toys | Toy Brigade</title>
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Toy Brigade | Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap"
-    rel="stylesheet">
+  <!-- Bootstrap / Fonts / Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
-  <link rel="stylesheet" href="css/cart.css">
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/shop.css" />
+
+  <style>
+    /* Page-level sugar that leans on your theme, minimal inline */
+    .cart-hero { background: #fff5f8; }
+    .cart-card { border: 0; border-radius: 18px; box-shadow: 0 6px 16px rgba(255, 182, 193, 0.18); }
+    .cart-img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; }
+    .qty-input { width: 72px; border-radius: 12px; }
+    .remove-link { color: #dc3545; text-decoration: none; }
+    .remove-link:hover { text-decoration: underline; }
+    .summary-card { border: 0; border-radius: 18px; box-shadow: 0 6px 16px rgba(255, 182, 193, 0.18); }
+  </style>
 </head>
-
 <body>
-  <!-- Themed Page Loading Spinner -->
-  <div id="spinner"
-    class="d-flex justify-content-center align-items-center vh-100 position-fixed top-0 start-0 w-100 h-100 bg-light"
-    style="z-index: 2000;">
-    <div class="pastel-spinner"></div>
-  </div>
-
-
-
-
-  <!-- Navbar -->
+  <!-- Navbar (kept from your theme) -->
   <nav class="navbar navbar-expand-lg navbar-light bg-pastel shadow-sm sticky-top playful-nav">
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo">
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -53,12 +58,11 @@ include "connection.php";
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto playful-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+            <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
-
           <!-- Categories Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
@@ -69,7 +73,7 @@ include "connection.php";
 
               <!-- Main Category 1 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-earlydev.html">👶 Early Development Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -81,7 +85,7 @@ include "connection.php";
                       <li><a class="dropdown-item" href="product-sensory-2.html">VTech Sit-to-Stand Walker</a></li>
                       <li><a class="dropdown-item" href="product-sensory-3.html">Bright Starts Tummy Time Mat</a></li>
                       <li><a class="dropdown-item" href="product-sensory-4.html">Infantino Multi Ball Set</a></li>
-                      <li><a class="dropdown-item" href="product-sensory-5.html">LeapFrog My Pal Scout</a></li>
+                      <li><a class="dropdown-item" href="product-sensory-5.html">LeapF Frog My Pal Scout</a></li>
                     </ul>
                   </li>
 
@@ -114,7 +118,7 @@ include "connection.php";
 
               <!-- Main Category 2 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-action.html">⚔️ Action & Adventure Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-action.php">⚔️ Action & Adventure Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -157,7 +161,7 @@ include "connection.php";
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -203,9 +207,8 @@ include "connection.php";
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+            <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
               <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
@@ -215,10 +218,33 @@ include "connection.php";
               </button>
             </form>
           </li>
-
         </ul>
+        
 
 
+          <?php if(isset($_SESSION['email'])): ?>
+          <!-- User Profile Dropdown (shown when logged in) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
+              <a class="dropdown-item" href="#"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            </div>
+          </li>
+
+          <li class="nav-item d-flex align-items-center ms-2">
+            <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
+              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
+            </a>
+          </li>
+
+        <?php else: ?>
+        <!-- Login/Signup Dropdown (shown when not logged in) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -228,18 +254,17 @@ include "connection.php";
             id="accountDropdownMenu">
             <!-- Sliding container -->
             <div class="form-slider d-flex" style="width:200%; transition: transform 0.4s ease;">
-
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
-                <form id="loginForm">
+                <form id="loginForm" action="login.php" method="POST">  
                   <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                    <input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
                   <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
+                    <input type="password" class="form-control pastel-input" name="password" placeholder="Password" required>
                   </div>
-                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
                     <span class="loading-text d-none">Loading...</span>
                   </button>
@@ -253,18 +278,18 @@ include "connection.php";
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
-                <form id="signupForm">
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="First name"
+                <form id="signupForm" action="signup.php" method="POST"> 
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="fname" placeholder="First name" 
                       required></div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="Last name"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lname" placeholder="Last name" 
                       required></div>
-                  <div class="mb-2"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-2"><input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lytcard"
                       placeholder="Loyalty card number (optional)"></div>
-                  <div class="mb-2"><input type="password" class="form-control pastel-input" placeholder="Password"
+                  <div class="mb-2"><input type="password" class="form-control pastel-input" name="password" placeholder="Password"
                       required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
                     <span class="loading-text d-none">Creating...</span>
                   </button>
@@ -273,111 +298,127 @@ include "connection.php";
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
         </li>
-
+        <?php endif; ?>
       </div>
     </div>
   </nav>
 
 
-  <!-- Hero Section -->
-  <section class="hero d-flex flex-column justify-content-center align-items-center text-center py-5">
-    <h1 class="hero-title splice">⚔️ Action & Adventure Toys</h1>
-    <p class="text-muted">Pick a subcategory to explore and start shopping!</p>
-  </section>
-
-  <!-- Subcategories and Products -->
-  <section class="container py-5">
-
-    <!-- Action Figures & Superheroes -->
-    <h2 class="mb-4 splice-text">Action Figures & Superheroes</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card category-card shadow">
-          <img src="images/products/ironman.jpg" class="card-img-top" alt="Iron Man">
-          <div class="card-body text-center">
-            <h5 class="card-title">Marvel Avengers Iron Man</h5>
-            <p class="price">$19.99</p>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-pastel add-to-cart" data-product="Iron Man" data-price="19.99">Add to Cart</button>
-              <button class="btn btn-outline-secondary">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Add 4 more action figures here -->
-    </div>
-
-    <!-- Vehicles & Playsets -->
-    <h2 class="mt-5 mb-4 splice-text">Vehicles & Playsets</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card category-card shadow">
-          <img src="images/products/hotwheels-track.jpg" class="card-img-top" alt="Hot Wheels Track">
-          <div class="card-body text-center">
-            <h5 class="card-title">Hot Wheels Super Track</h5>
-            <p class="price">$29.99</p>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-pastel add-to-cart" data-product="Hot Wheels Super Track" data-price="29.99">Add to
-                Cart</button>
-              <button class="btn btn-outline-secondary">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Add 4 more vehicles/playsets here -->
-    </div>
-
-    <!-- Outdoor & Active Toys -->
-    <h2 class="mt-5 mb-4 splice-text">Outdoor & Active Toys</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card category-card shadow">
-          <img src="images/products/nerf-blaster.jpg" class="card-img-top" alt="Nerf Blaster">
-          <div class="card-body text-center">
-            <h5 class="card-title">Nerf Elite Blaster</h5>
-            <p class="price">$24.99</p>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-pastel add-to-cart" data-product="Nerf Blaster" data-price="24.99">Add to
-                Cart</button>
-              <button class="btn btn-outline-secondary">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Add 4 more outdoor toys here -->
+  <!-- Hero / Title -->
+  <section class="cart-hero py-5">
+    <div class="container text-center">
+      <h1 class="section-title splice-text mb-2">Your Cart</h1>
+      <p class="text-muted mb-0">Review items, adjust quantities, and proceed to checkout.</p>
     </div>
   </section>
 
-  <!-- Cart Button -->
-  <button class="btn btn-pastel cart-btn position-fixed" style="bottom:20px; right:20px;" data-bs-toggle="modal"
-    data-bs-target="#cartModal">
-    🛒 Cart (<span id="cart-count">0</span>)
-  </button>
+  <!-- Cart Content -->
+  <main class="container my-4">
+    <div class="row g-4">
+      <!-- Left: Items -->
+      <div class="col-12 col-lg-8">
+        <div class="card cart-card p-3">
+          <div id="cart-empty" class="text-center py-5 <?php echo $cart_count === 0 ? '' : 'd-none'; ?>">
+            <p class="mb-3">Your cart is empty.</p>
+            <a href="shop.php" class="btn btn-pastel">Continue Shopping</a>
+          </div>
 
-  <!-- Cart Modal -->
-  <div class="modal fade" id="cartModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">🛒 Your Cart</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <div id="cart-list">
+            <?php if ($cart_count > 0): ?>
+              <?php foreach ($cart_items as $item): ?>
+                <?php 
+                $item_total = $item['price'] * $item['quantity'];
+                $subtotal += $item_total;
+                ?>
+                <div class="cart-item d-flex align-items-center border-bottom pb-3 mb-3">
+                  <img src="../images/products/<?php echo $item['prodImage']; ?>" alt="<?php echo $item['productName']; ?>" class="cart-img me-3">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-1"><?php echo $item['productName']; ?></h6>
+                    <p class="mb-1 price-tag">₱<?php echo number_format($item['price'], 2); ?></p>
+                    <div class="d-flex align-items-center">
+                      <form method="POST" action="update_cart.php" class="d-flex align-items-center me-3">
+                        <input type="hidden" name="productID" value="<?php echo $item['productID']; ?>">
+                        <label for="qty-<?php echo $item['productID']; ?>" class="me-2">Qty:</label>
+                        <input type="number" id="qty-<?php echo $item['productID']; ?>" name="quantity" value="<?php echo $item['quantity']; ?>" min="1" class="form-control form-control-sm qty-input">
+                        <button type="submit" name="update_cart" class="btn btn-sm btn-outline-secondary ms-2">Update</button>
+                      </form>
+                      <form method="POST" action="delete_cart.php">
+                        <input type="hidden" name="productID" value="<?php echo $item['productID']; ?>">
+                        <button type="submit" name="delete_cart"class="btn btn-sm remove-link">Remove</button>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <p class="mb-0 fw-bold">₱<?php echo number_format($item_total, 2); ?></p>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
         </div>
-        <div class="modal-body" id="cartItems">
-          <p>Your cart is empty.</p>
-        </div>
-        <div class="modal-footer cart-footer">
-          <h5>Total: <span id="cartTotal">₱0</span></h5>
-          <button class="btn btn-success">Checkout</button>
+      </div>
+
+      <!-- Right: Summary -->
+      <div class="col-12 col-lg-4">
+        <div class="card summary-card p-3">
+          <h5 class="mb-3">Order Summary</h5>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Items Subtotal</span>
+            <span id="sum-subtotal">₱<?php echo number_format($subtotal, 2); ?></span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Shipping</span>
+            <span class="text-muted">Calculated at checkout</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mb-3">
+            <strong>Total</strong>
+            <strong id="sum-total">₱<?php echo number_format($subtotal, 2); ?></strong>
+          </div>
+          <?php if ($cart_count > 0): ?>
+            <a href="checkout.php" class="btn btn-pastel w-100" id="btn-checkout">Proceed to Checkout</a>
+          <?php else: ?>
+            <button class="btn btn-outline-secondary w-100" disabled>Proceed to Checkout</button>
+          <?php endif; ?>
+          <p class="small text-muted mt-2 mb-0">Note: This is a demo flow; payment will be simulated in sandbox.</p>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
-
+  <!-- You Might Also Like (Recommendations) -->
+  <!-- <section class="container my-5">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h3 class="mb-0 splice-text">You might also like…</h3>
+      <small class="text-muted">Based on what's in your cart</small>
+    </div>
+    <div class="row g-3" id="reco-cart">
+      recommendations render here
+      <?php
+      // Simple recommendation logic - show some random products
+      // $reco_query = "SELECT productID, productName, price, prodImage FROM products WHERE status = 1 ORDER BY RAND() LIMIT 4";
+      // $reco_result = mysqli_query($conn, $reco_query);
+      
+      // if ($reco_result && mysqli_num_rows($reco_result) > 0) {
+      //   while ($reco = mysqli_fetch_assoc($reco_result)) {
+      //     echo '<div class="col-md-3">';
+      //     echo '  <div class="card product-card h-100">';
+      //     echo '    <img src="../images/products/' . $reco['prodImage'] . '" class="card-img-top" alt="' . $reco['productName'] . '" style="height: 150px; object-fit: cover;">';
+      //     echo '    <div class="card-body">';
+      //     echo '      <h6 class="card-title">' . $reco['productName'] . '</h6>';
+      //     echo '      <p class="price-tag">₱' . number_format($reco['price'], 2) . '</p>';
+      //     echo '      <a href="shop.php" class="btn btn-pastel btn-sm">View Product</a>';
+      //     echo '    </div>';
+      //     echo '  </div>';
+      //     echo '</div>';
+      //   }
+      // }
+      ?>
+    </div>
+  </section> -->
 
   <!-- Footer -->
   <footer class="footer py-5 bg-pastel">
@@ -386,7 +427,7 @@ include "connection.php";
 
         <!-- Logo & About -->
         <div class="col-md-3 footer-card text-center text-md-start">
-          <img src="images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
+          <img src="../images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
           <p class="small text-muted">Bringing joy and play to every child with toys made for fun and imagination.</p>
         </div>
 
@@ -394,10 +435,10 @@ include "connection.php";
         <div class="col-md-3 footer-card text-center text-md-start">
           <h5 class="footer-title">Quick Links</h5>
           <ul class="list-unstyled">
-            <li><a href="#" class="footer-link">Home</a></li>
-            <li><a href="#" class="footer-link">Shop</a></li>
+            <li><a href="index.php" class="footer-link">Home</a></li>
+            <li><a href="shop.php" class="footer-link">Shop</a></li>
             <li><a href="#" class="footer-link">Categories</a></li>
-            <li><a href="#" class="footer-link">Contact</a></li>
+            <li><a href="contact.php" class="footer-link">Contact</a></li>
           </ul>
         </div>
 
@@ -433,11 +474,7 @@ include "connection.php";
     </div>
   </footer>
 
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="./js/main.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

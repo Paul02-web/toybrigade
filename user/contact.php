@@ -1,10 +1,16 @@
+<?php
+include "connection.php";
+include "auth_session.php";
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toy Brigade | Home</title>
+  <title>Contact Us - Toy Brigade</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,21 +22,20 @@
 
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/contact.css">
 
 </head>
 
 <body>
-
-
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-pastel shadow-sm sticky-top playful-nav">
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo">
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -40,12 +45,11 @@
       <div class="collapse navbar-collapse" id="navMenu">
         <ul class="navbar-nav ms-auto playful-nav">
           <li class="nav-item">
-            <a class="nav-link" href="./index.html"><span class="me-1">🏠</span>Home</a>
+            <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./shop.html"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
-
           <!-- Categories Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
@@ -56,7 +60,7 @@
 
               <!-- Main Category 1 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-earlydev.html">👶 Early Development Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -101,7 +105,7 @@
 
               <!-- Main Category 2 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-action.html">⚔️ Action & Adventure Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-action.php">⚔️ Action & Adventure Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -144,7 +148,7 @@
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -190,7 +194,7 @@
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./contact.html"><i class="fas fa-phone me-1"></i>Contact</a>
+            <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
@@ -205,6 +209,29 @@
         
 
 
+          <?php if(isset($_SESSION['email'])): ?>
+          <!-- User Profile Dropdown (shown when logged in) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
+              <a class="dropdown-item" href="#"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            </div>
+          </li>
+
+          <li class="nav-item d-flex align-items-center ms-2">
+            <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
+              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
+            </a>
+          </li>
+
+        <?php else: ?>
+        <!-- Login/Signup Dropdown (shown when not logged in) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -217,14 +244,14 @@
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
-                <form id="loginForm">
+                <form id="loginForm" action="login.php" method="POST">  
                   <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                    <input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
                   <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
+                    <input type="password" class="form-control pastel-input" name="password" placeholder="Password" required>
                   </div>
-                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
                     <span class="loading-text d-none">Loading...</span>
                   </button>
@@ -238,18 +265,18 @@
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
-                <form id="signupForm">
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="First name"
+                <form id="signupForm" action="signup.php" method="POST"> 
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="fname" placeholder="First name" 
                       required></div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="Last name"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lname" placeholder="Last name" 
                       required></div>
-                  <div class="mb-2"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-2"><input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lytcard"
                       placeholder="Loyalty card number (optional)"></div>
-                  <div class="mb-2"><input type="password" class="form-control pastel-input" placeholder="Password"
+                  <div class="mb-2"><input type="password" class="form-control pastel-input" name="password" placeholder="Password"
                       required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
                     <span class="loading-text d-none">Creating...</span>
                   </button>
@@ -258,143 +285,69 @@
                   </div>
                 </form>
               </div>
-
-
             </div>
           </div>
         </li>
-
+        <?php endif; ?>
       </div>
     </div>
   </nav>
 
 
+  <!-- Hero Section -->
+  <section class="text-center py-5 bg-light">
+    <h1 class="fw-bold">📬 Contact Us</h1>
+    <p class="text-muted">We’d love to hear from you! Fill out the form or reach us directly.</p>
 
-  <!-- Hero Carousel -->
-  <section id="heroCarousel" class="carousel slide hero" data-bs-ride="carousel" data-bs-interval="4000">
-    <!-- Indicators -->
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"
-        aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-
-    <!-- Slides -->
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="images/baby-playing.svg" class="d-block w-100" alt="Toy Image 1">
-      </div>
-      <div class="carousel-item">
-        <img src="images/kids-playing-toys.svg" class="d-block w-100" alt="Toy Image 2">
-      </div>
-      <div class="carousel-item">
-        <img src="images/toy-store.svg" class="d-block w-100" alt="Toy Image 3">
-      </div>
-    </div>
-
-    <!-- Overlay text -->
-    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-      <h1 class="fw-bold hero-title">Welcome to Toy Brigade 🎠</h1>
-      <p class="lead">A proudly Filipino toy brand where imagination meets the imaginary. Fun has no age limit!</p>
-      <a href="#" class="btn btn-pastel btn-lg mt-3">Shop Now</a>
-    </div>
-
-    <!-- Prev/Next controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
   </section>
 
+  <!-- Contact Content -->
+  <section class="container my-5">
+    <div class="row g-4">
 
-  <!-- About / Mission (Full-Height with Dynamic Layout) -->
-  <section class="mission-section d-flex align-items-center" style="min-height: 100vh; background-color: #fffafc;">
-    <div class="container">
-      <div class="row align-items-center">
+      <!-- Contact Form -->
+      <div class="col-lg-6">
+        <div class="card shadow p-4 rounded-4 contact-card">
+          <h3 class="mb-3">Send us a message</h3>
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Your Name</label>
+              <input type="text" class="form-control rounded-3" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Your Email</label>
+              <input type="email" class="form-control rounded-3" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Subject</label>
+              <input type="text" class="form-control rounded-3" placeholder="Subject">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea class="form-control rounded-3" rows="5" placeholder="Type your message"></textarea>
+            </div>
+            <button type="submit" class="contact-btn">Send Message</button>
 
-        <!-- Text Column -->
-        <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-          <h2 class="fw-bold section-title display-4">Our Mission</h2>
-          <p class="lead mb-3">
-            Toy Brigade is a proudly Filipino toy brand that sparks imagination, creativity, and joy for all ages.
-            From educational toys for toddlers to collectible figures for enthusiasts, we bring playful experiences to
-            life.
-          </p>
-          <p class="lead mb-3">
-            We curate high-quality products blending learning, adventure, and nostalgia. Our goal is to connect a
-            community
-            of toy lovers—young and old—through purposeful and meaningful play.
-          </p>
-          <p class="fw-semibold">
-            "To empower creativity and connection with a thoughtfully selected collection of toys that enrich play for
-            everyone."
-          </p>
+          </form>
         </div>
-
-        <!-- Image Column (Collage, Magazine-Style) -->
-        <div class="col-lg-6 d-flex flex-wrap justify-content-center gap-3 mission-images-wrapper">
-          <img src="./images/pup-toy-baby.svg" alt="Toy Play" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-2.png" alt="Learning Toy" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-3.png" alt="Collectibles" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-          <img src="images/mission-4.png" alt="Adventure" class="img-fluid rounded-4 shadow angled-mission"
-            style="width: 48%;">
-        </div>
-
       </div>
-    </div>
-  </section>
 
-
-  <!-- Explore Categories -->
-  <section class="explore-categories position-relative py-5" style="background-color: #fffafc;">
-    <div class="container">
-      <h2 class="text-center mb-2 fw-bold section-title">Explore Categories</h2>
-      <p class="text-center mb-5 lead">
-        Discover our curated toy collections, crafted to spark creativity, learning, and fun for every age.
-      </p>
-
-      <div class="row g-4 position-relative category-wrapper">
-
-        <!-- Featured Category -->
-        <div class="col-lg-7 featured-wrapper">
-          <div class="card h-100 text-center shadow category-card featured-card">
-            <img src="images/baby-playing.svg" class="card-img-top" alt="Early Development Toys">
-            <div class="card-body">
-              <h5 class="card-title display-6">Early Development Toys</h5>
-              <p class="card-text">Fun and educational toys for toddlers to spark curiosity and learning.</p>
-              <a href="#" class="btn btn-pastel btn-lg">Browse</a>
-            </div>
+      <!-- Contact Info -->
+      <div class="col-lg-6 ">
+        <div class="card shadow p-4 rounded-4 contact-card-2">
+          <h3 class="mb-3">Get in Touch</h3>
+          <p><strong>📍 Address:</strong> 123 Toy Street, Playtown, PH</p>
+          <p><strong>📞 Phone:</strong> +63 912 345 6789</p>
+          <p><strong>✉️ Email:</strong> support@siatoybrigade.com</p>
+          <div class="mt-4">
+            <iframe
+              src="https://www.google.com/maps/place/Toy+Kingdom+-+SM+North+Edsa/@14.6568205,121.0278747,17z/data=!3m1!4b1!4m6!3m5!1s0x3397b6e2dcf2ade9:0xf4ee6827acaa43ae!8m2!3d14.6568153!4d121.0304496!16s%2Fg%2F1hhxq4_z3?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D">
+              width="100% height="250" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
           </div>
         </div>
-
-        <!-- Smaller Categories -->
-        <div class="col-lg-5 d-flex flex-column justify-content-between small-cards-wrapper">
-
-          <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/iron-man-figure.svg" class="card-img-top" alt="Action & Adventure Toys">
-            <div class="card-body">
-              <h5 class="card-title">Action & Adventure Toys</h5>
-              <a href="#" class="btn btn-pastel">Browse</a>
-            </div>
-          </div>
-
-          <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/collectors.jpg" class="card-img-top" alt="Collector’s Vault">
-            <div class="card-body">
-              <h5 class="card-title">Collector’s Vault</h5>
-              <a href="#" class="btn btn-pastel">Browse</a>
-            </div>
-          </div>
-
-        </div>
-
       </div>
+
     </div>
   </section>
 
@@ -405,7 +358,7 @@
 
         <!-- Logo & About -->
         <div class="col-md-3 footer-card text-center text-md-start">
-          <img src="images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
+          <img src="../images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
           <p class="small text-muted">Bringing joy and play to every child with toys made for fun and imagination.</p>
         </div>
 
@@ -451,24 +404,6 @@
       </div>
     </div>
   </footer>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/core.js"></script>
-  <script src="./assets/js/main.js"></script>
-  <script src="assets/js/adminlink.js"></script>
-
-          <script>
-            // CODE FOR THE REDIRECT CART
-            function redirectCart() {
-                // Check if the user is logged in
-                if(!"<?php echo isset($_SESSION["username"]) ? $_SESSION["username"] : '' ?>") {
-                    // Redirect the user to the login page
-                    alert("You are not logged in. Please log into your account and try again.");
-                    window.location.href = "users/index.php";
-                }
-            }
-        </script> 
 
 </body>
 

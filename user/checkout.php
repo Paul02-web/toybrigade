@@ -1,51 +1,44 @@
-<?php
-include "connection.php";
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toy Brigade | Shop</title>
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Toy Brigade | Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap"
-    rel="stylesheet">
+  <!-- Bootstrap / Fonts / Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Baloo+2:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- Theme CSS -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/shop.css" />
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
-  <link rel="stylesheet" href="./css/shop.css">
-
-
-  <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
+  <style>
+    /* page sugar */
+    .co-hero { background:#fff5f8; }
+    .co-card { border:0; border-radius:18px; box-shadow:0 6px 16px rgba(255,182,193,.18); }
+    .co-step { display:flex; gap:.5rem; align-items:center; }
+    .co-step .bubble { width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700; }
+    .bubble-active { background:#ffd24d; }
+    .bubble-done { background:#c6f6d5; }
+    .bubble-next { background:#eee; }
+    .co-small { font-size:.92rem; }
+    .co-field { border-radius:14px; border:2px solid rgba(255,182,193,.35); }
+    .co-field:focus { border-color: rgba(255,182,193,.8); box-shadow:0 0 0 .2rem rgba(255,182,193,.25); }
+    .co-summary { border:0; border-radius:18px; box-shadow:0 6px 16px rgba(255,182,193,.18); }
+    .co-divider { border-top:1px dashed rgba(0,0,0,.08); }
+  </style>
 </head>
-
 <body>
-  <!-- Themed Page Loading Spinner -->
-  <div id="spinner"
-    class="d-flex justify-content-center align-items-center vh-100 position-fixed top-0 start-0 w-100 h-100 bg-light"
-    style="z-index: 2000;">
-    <div class="pastel-spinner"></div>
-  </div>
-
-
-
-  <!-- Navbar -->
+  <!-- Navbar (kept from your theme) -->
   <nav class="navbar navbar-expand-lg navbar-light bg-pastel shadow-sm sticky-top playful-nav">
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo">
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -58,10 +51,10 @@ include "connection.php";
             <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link active" aria-current="page" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
 
-          <!-- Categories Dropdown -->
+          <!-- Categories Dropdown (kept) -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -73,7 +66,6 @@ include "connection.php";
               <li class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
-
                   <!-- Subcategory 1 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Sensory & Baby Play</a>
@@ -116,7 +108,7 @@ include "connection.php";
 
               <!-- Main Category 2 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-action.html">⚔️ Action & Adventure Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-action.php">⚔️ Action & Adventure Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -159,9 +151,8 @@ include "connection.php";
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
-
                   <!-- Subcategory 1 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Anime & Pop Culture</a>
@@ -173,7 +164,6 @@ include "connection.php";
                       <li><a class="dropdown-item" href="product-anime-5.html">Sailor Moon Wand</a></li>
                     </ul>
                   </li>
-
                   <!-- Subcategory 2 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Retro & Nostalgia</a>
@@ -185,7 +175,6 @@ include "connection.php";
                       <li><a class="dropdown-item" href="product-retro-5.html">Beanie Babies Collection</a></li>
                     </ul>
                   </li>
-
                   <!-- Subcategory 3 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Filipino Exclusives</a>
@@ -199,14 +188,26 @@ include "connection.php";
                   </li>
                 </ul>
               </li>
-
             </ul>
-          </li>
 
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
+
+          <!-- Cart icon with badge (theme-matched) -->
+<li class="nav-item d-flex align-items-center ms-2">
+  <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
+    <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
+    <!-- Red badge dot -->
+    <span id="tb-cart-badge-wrap" class="tb-badge-dot d-none" aria-hidden="true">
+      <span id="tb-cart-badge" class="visually-hidden">0</span>
+    </span>
+  </a>
+</li>
+
+
+          <!-- Navbar search (kept) -->
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
               <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
@@ -218,7 +219,7 @@ include "connection.php";
           </li>
         </ul>
 
-
+        <!-- Account dropdown (kept) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -226,19 +227,15 @@ include "connection.php";
           </a>
           <div class="dropdown-menu dropdown-menu-end p-4" style="min-width: 320px; overflow: hidden;"
             id="accountDropdownMenu">
-            <!-- Sliding container -->
             <div class="form-slider d-flex" style="width:200%; transition: transform 0.4s ease;">
-
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
                 <form id="loginForm">
-                  <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-3"><input type="email" class="form-control pastel-input" placeholder="Email" required>
                   </div>
-                  <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
-                  </div>
+                  <div class="mb-3"><input type="password" class="form-control pastel-input" placeholder="Password"
+                      required></div>
                   <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
                     <span class="default-text">Login</span>
                     <span class="loading-text d-none">Loading...</span>
@@ -249,7 +246,6 @@ include "connection.php";
                   </div>
                 </form>
               </div>
-
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
@@ -273,158 +269,150 @@ include "connection.php";
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
         </li>
-
       </div>
     </div>
   </nav>
 
-
-
-  <!-- Shop Page -->
-  <!-- Hero Banner -->
-  <section class="shop-hero position-relative text-center text-white">
-    <img src="images/shop-hero.jpg" class="w-100 hero-img" alt="Shop Banner">
-
-    <!-- Angled overlay -->
-    <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
-
-    <div class="hero-text position-absolute top-50 start-50 translate-middle">
-      <h1 class="display-4 splice-text">Discover Our Toys</h1>
-      <p class="lead">Fun, playful, and full of imagination for every child</p>
-      <a href="#shop-categories" class="btn btn-pastel btn-lg mt-3">Shop Now</a>
-    </div>
-  </section>
-
-
-
-  <section class="py-5" id="shop-categories" style="background-color: #fff5f8;">
+  <!-- Hero -->
+  <section class="co-hero py-4">
     <div class="container">
-
-      <!-- Section Header -->
-      <div class="text-center mb-5">
-        <h1 class="section-title splice-text">Shop by Category</h1>
-        <p class="text-muted">Find toys for every age, interest, and collector's passion</p>
-      </div>
-
-      <!-- Main Category 1: Early Development Toys -->
-      <h2 class="section-title splice-text mb-4">Early Development Toys</h2>
-      <div class="row mb-5">
-        <!-- Subcategory 1: Sensory & Baby Play -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm position-relative hover-scale">
-            <span class="badge bg-pink text-white position-absolute top-0 start-0 m-2">New</span>
-            <img src="images/categories/sensory.jpg" class="card-img-top" alt="Sensory & Baby Play">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Sensory & Baby Play</h5>
-              <a href="./category-earlydev.php#sensory" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Subcategory 2: STEM & Learning Toys -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/stem.jpg" class="card-img-top" alt="STEM & Learning Toys">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">STEM & Learning</h5>
-              <a href="./category-earlydev.php#stem" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Subcategory 3: Pretend Play & Roleplay -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/roleplay.jpg" class="card-img-top" alt="Pretend Play & Roleplay">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Pretend Play & Roleplay</h5>
-              <a href="./category-earlydev.php#pretendplay" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <h1 class="section-title splice-text mb-0">Checkout</h1>
+        <div class="d-flex gap-3 co-small">
+          <div class="co-step"><span class="bubble bubble-active" id="b1">1</span> <span>Shipping</span></div>
+          <div class="co-step"><span class="bubble bubble-next" id="b2">2</span> <span>Payment</span></div>
+          <div class="co-step"><span class="bubble bubble-next" id="b3">3</span> <span>Review</span></div>
         </div>
       </div>
-
-      <!-- Main Category 2: Action & Adventure Toys -->
-      <h2 class="section-title splice-text mb-4">Action & Adventure Toys</h2>
-      <div class="row mb-5">
-        <!-- Subcategories -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/action-figures.jpg" class="card-img-top" alt="Action Figures & Superheroes">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Action Figures & Superheroes</h5>
-              <a href="category-actionfigures.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/vehicles.jpg" class="card-img-top" alt="Vehicles & Playsets">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Vehicles & Playsets</h5>
-              <a href="category-vehicles.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/outdoor.jpg" class="card-img-top" alt="Outdoor & Active Toys">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Outdoor & Active Toys</h5>
-              <a href="category-outdoor.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main Category 3: Collector’s Vault -->
-      <h2 class="section-title splice-text mb-4">Collector’s Vault</h2>
-      <div class="row mb-5">
-        <!-- Subcategories -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/anime.jpg" class="card-img-top" alt="Anime & Pop Culture">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Anime & Pop Culture</h5>
-              <a href="category-anime.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/retro.jpg" class="card-img-top" alt="Retro & Nostalgia">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Retro & Nostalgia</h5>
-              <a href="category-retro.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/filipino.jpg" class="card-img-top" alt="Filipino Collector's Exclusives">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Filipino Exclusives</h5>
-              <a href="category-filipino.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
+
+  <!-- Content -->
+  <main class="container my-4">
+    <div class="row g-4">
+      <!-- Left: steps -->
+      <div class="col-12 col-lg-8">
+        <div class="card co-card p-3">
+          <!-- Step 1: Shipping -->
+          <section id="step-1">
+            <h5 class="mb-3">Shipping Details</h5>
+            <form id="shippingForm" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">First name</label>
+                  <input type="text" class="form-control co-field" name="firstName" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Last name</label>
+                  <input type="text" class="form-control co-field" name="lastName" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control co-field" name="email" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Phone</label>
+                  <input type="tel" class="form-control co-field" name="phone" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Address</label>
+                  <input type="text" class="form-control co-field" name="address" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">City</label>
+                  <input type="text" class="form-control co-field" name="city" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Postal Code</label>
+                  <input type="text" class="form-control co-field" name="postal" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Shipping Method</label>
+                  <select class="form-select co-field" name="shippingMethod" required>
+                    <option value="standard">Standard (₱150)</option>
+                    <option value="express">Express (₱350)</option>
+                    <option value="pickup">Store Pickup (Free)</option>
+                  </select>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                  <button type="submit" class="btn btn-pastel">Continue to Payment</button>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <!-- Step 2: Payment -->
+          <section id="step-2" class="d-none">
+            <h5 class="mb-3">Payment</h5>
+            <form id="paymentForm" novalidate>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Payment Method</label>
+                  <select class="form-select co-field" name="method" required>
+                    <option value="card">Credit/Debit Card (Sandbox)</option>
+                    <option value="cod">Cash on Delivery</option>
+                  </select>
+                  <div class="form-text">No real charge will be made in sandbox.</div>
+                </div>
+                <div id="cardBlock" class="col-12">
+                  <label class="form-label">Card number</label>
+                  <input type="text" class="form-control co-field" name="cardNumber" placeholder="4111 1111 1111 1111">
+                </div>
+                <div id="cardBlock2" class="col-md-6">
+                  <label class="form-label">Expiry (MM/YY)</label>
+                  <input type="text" class="form-control co-field" name="expiry" placeholder="12/29">
+                </div>
+                <div id="cardBlock3" class="col-md-6">
+                  <label class="form-label">CVC</label>
+                  <input type="text" class="form-control co-field" name="cvc" placeholder="123">
+                </div>
+                <div class="col-12 d-flex justify-content-between">
+                  <button type="button" class="btn btn-outline-secondary" id="backToShipping">Back</button>
+                  <button type="submit" class="btn btn-pastel">Review Order</button>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <!-- Step 3: Review -->
+          <section id="step-3" class="d-none">
+            <h5 class="mb-3">Review & Place Order</h5>
+            <div id="review-items" class="mb-3"></div>
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary" id="backToPayment">Back</button>
+              <button type="button" class="btn btn-pastel" id="placeOrderBtn">Place Order</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Right: summary -->
+      <div class="col-12 col-lg-4">
+        <div class="card co-summary p-3">
+          <h5 class="mb-3">Order Summary</h5>
+          <div id="sum-list" class="mb-2"></div>
+          <div class="d-flex justify-content-between"><span>Items Subtotal</span><span id="co-sub">₱0.00</span></div>
+          <div class="d-flex justify-content-between"><span>Shipping</span><span id="co-ship">—</span></div>
+          <div class="co-divider my-2"></div>
+          <div class="d-flex justify-content-between"><strong>Total</strong><strong id="co-total">₱0.00</strong></div>
+          <div class="small text-muted mt-2">Sandbox checkout — no real charges.</div>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- Footer -->
+  <!-- Footer (kept) -->
   <footer class="footer py-5 bg-pastel">
     <div class="container">
       <div class="row g-4 justify-content-center">
 
         <!-- Logo & About -->
         <div class="col-md-3 footer-card text-center text-md-start">
-          <img src="images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
+          <img src="../images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
           <p class="small text-muted">Bringing joy and play to every child with toys made for fun and imagination.</p>
         </div>
 
@@ -470,10 +458,5 @@ include "connection.php";
       </div>
     </div>
   </footer>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./js/main.js"></script>
 </body>
-
 </html>
