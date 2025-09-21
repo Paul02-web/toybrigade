@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 14, 2025 at 01:10 PM
+-- Generation Time: Sep 21, 2025 at 11:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -124,11 +124,16 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`productID`, `productName`, `price`, `stock`, `productDesc`, `prodImage`, `status`, `subcategoryID`) VALUES
-(37, 'Superhero Action Figure', 1499.99, 50, 'Poseable superhero action figure', 'images/iron-man-figure.svg', 1, 1),
+(37, 'Superhero Action Figure', 1499.99, 50, 'Poseable superhero action figure', 'images/iron-man-figure.svg', 0, 1),
 (38, 'Strategy Board Game', 299.99, 25, 'Family strategy board game', '', 0, 2),
-(39, 'Science Kit', 800.99, 30, 'Educational science kit', '', 0, 3),
-(40, 'Teddy Bear', 600.99, 40, 'Soft plush teddy bear', 'images/pup-toy-baby.svg', 0, 4),
-(41, 'Building Blocks Set', 342.99, 20, '500-piece building blocks set', '', 0, 5);
+(39, 'Science Kit', 800.99, 27, 'Educational science kit', '', 0, 3),
+(40, 'Teddy Bear', 600.99, 38, 'Soft plush teddy bear', 'images/pup-toy-baby.svg', 0, 4),
+(41, 'Building Blocks Set', 342.99, 19, '500-piece building blocks set', '', 0, 5),
+(42, 'Test Product', 69420.69, 999, 'Testing Product', '', 0, 1),
+(43, 'Test Product', 69420.69, 999, 'Testing Product', '', 0, 2),
+(44, 'Test Product', 69420.69, 3, 'Testing Product', '', 0, 3),
+(45, 'Test Product', 69420.69, 2, 'Testing Product', '', 0, 4),
+(46, 'Test Product', 69420.69, 0, 'Testing Product', '', 0, 5);
 
 -- --------------------------------------------------------
 
@@ -162,12 +167,22 @@ INSERT INTO `subcategories` (`subcategoryID`, `subcategoryName`, `categoryID`, `
 
 CREATE TABLE `transactions` (
   `transactionID` int(11) NOT NULL,
+  `customerID` int(11) NOT NULL,
   `productID` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `totalPrice` decimal(10,2) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` varchar(12) NOT NULL
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`transactionID`, `customerID`, `productID`, `quantity`, `totalPrice`, `date`, `status`) VALUES
+(1, 1, 39, 3, 2403.00, '2025-09-21 09:48:24', 'Pending'),
+(2, 1, 40, 2, 1202.00, '2025-09-21 09:48:24', 'Pending'),
+(3, 1, 41, 1, 343.00, '2025-09-21 09:48:24', 'Pending');
 
 --
 -- Indexes for dumped tables
@@ -218,6 +233,7 @@ ALTER TABLE `subcategories`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`transactionID`),
+  ADD KEY `customerID` (`customerID`),
   ADD KEY `productID` (`productID`);
 
 --
@@ -234,7 +250,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `customer`
@@ -246,7 +262,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `subcategories`
@@ -258,7 +274,7 @@ ALTER TABLE `subcategories`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -276,12 +292,6 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `subcategories`
   ADD CONSTRAINT `subcategories_ibfk_1` FOREIGN KEY (`categoryID`) REFERENCES `category` (`categoryID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `transactions`
---
-ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `products` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

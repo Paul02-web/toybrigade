@@ -1,6 +1,15 @@
 <?php
 include "connection.php";
 include "auth_session.php";
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$cart_count = 0;
+if (isset($_SESSION['email'])) {
+    $cart_count_query = "SELECT SUM(quantity) AS total FROM cart WHERE customerID = {$_SESSION['customerID']}";
+    $cart_count_result = mysqli_query($conn, $cart_count_query);
+    $cart_count_row = mysqli_fetch_assoc($cart_count_result);
+    $cart_count = $cart_count_row['total'] ?? 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +33,7 @@ include "auth_session.php";
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/footer.css">
   <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/shop.css">
 
 </head>
 
@@ -33,7 +43,7 @@ include "auth_session.php";
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo"> 
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -194,18 +204,6 @@ include "auth_session.php";
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-          <li class="nav-item d-flex align-items-center">
-            <form id="navbarSearchForm" class="d-flex align-items-center">
-              <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
-                placeholder="Search...">
-              <button class="btn btn-pastel" type="button" id="searchToggle">
-                <i class="fas fa-search"></i>
-              </button>
-            </form>
-          </li>
-        </ul>
-        
-
 
           <?php if(isset($_SESSION['email'])): ?>
           <!-- User Profile Dropdown (shown when logged in) -->
@@ -215,7 +213,7 @@ include "auth_session.php";
               👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
             </a>
             <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
-              <a class="dropdown-item" href="#"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="edit_profile.php"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
               <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
@@ -224,7 +222,12 @@ include "auth_session.php";
 
           <li class="nav-item d-flex align-items-center ms-2">
             <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
-              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
+              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i> 
+              <?php if ($cart_count > 0): ?>
+              <span class="position-absolute top-0 start-100 translate-middle cart-count-pill">
+                <?php echo $cart_count; ?>
+              </span>
+            <?php endif; ?>
             </a>
           </li>
 
@@ -251,7 +254,6 @@ include "auth_session.php";
                   </div>
                   <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
-                    <span class="loading-text d-none">Loading...</span>
                   </button>
                   <div class="mt-2 text-center">
                     <small>New customer? <a href="#" id="showSignup">Create your account</a></small><br>
@@ -276,7 +278,6 @@ include "auth_session.php";
                       required></div>
                   <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
-                    <span class="loading-text d-none">Creating...</span>
                   </button>
                   <div class="mt-2 text-center">
                     <small>Already have an account? <a href="#" id="showLogin">Login here</a></small>

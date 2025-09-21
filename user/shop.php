@@ -2,6 +2,15 @@
 include 'connection.php';
 include 'auth_session.php';
 
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$cart_count = 0;
+if (isset($_SESSION['email'])) {
+    $cart_count_query = "SELECT SUM(quantity) AS total FROM cart WHERE customerID = {$_SESSION['customerID']}";
+    $cart_count_result = mysqli_query($conn, $cart_count_query);
+    $cart_count_row = mysqli_fetch_assoc($cart_count_result);
+    $cart_count = $cart_count_row['total'] ?? 0;
+}
+
 // Handle Add to Cart requests
 if (isset($_POST['add_to_cart']) && isset($_SESSION['email'])) {
     $productID = $_POST['productID'];
@@ -53,16 +62,26 @@ switch ($sort) {
 
 // Calculate offset for pagination
 $offset = ($page - 1) * $per_page;
+ 
+$where_clause = "";
 
-// Query to get products with sorting and pagination
+if (!empty($search)) {
+    $safe_search = mysqli_real_escape_string($conn, $search);
+    $where_clause = "WHERE productName LIKE '%$safe_search%' 
+                     OR productDesc LIKE '%$safe_search%'";
+}
+
 $query = "SELECT productID, productName, price, stock, productDesc, prodImage, status 
           FROM products
+          $where_clause
           ORDER BY $order_by 
           LIMIT $per_page OFFSET $offset";
+
+
 $result = mysqli_query($conn, $query);
 
 // Count total products for pagination
-$count_query = "SELECT COUNT(*) as total FROM products";
+$count_query = "SELECT COUNT(*) as total FROM products $where_clause";
 $count_result = mysqli_query($conn, $count_query);
 $count_data = mysqli_fetch_assoc($count_result);
 $total_products = $count_data['total'];
@@ -162,7 +181,7 @@ $total_pages = ceil($total_products / $per_page);
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo"> 
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -323,18 +342,6 @@ $total_pages = ceil($total_products / $per_page);
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-          <li class="nav-item d-flex align-items-center">
-            <form id="navbarSearchForm" class="d-flex align-items-center">
-              <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
-                placeholder="Search...">
-              <button class="btn btn-pastel" type="button" id="searchToggle">
-                <i class="fas fa-search"></i>
-              </button>
-            </form>
-          </li>
-        </ul>
-        
-
 
           <?php if(isset($_SESSION['email'])): ?>
           <!-- User Profile Dropdown (shown when logged in) -->
@@ -344,7 +351,7 @@ $total_pages = ceil($total_products / $per_page);
               👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
             </a>
             <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
-              <a class="dropdown-item" href="#"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="edit_profile.php"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
               <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
@@ -353,7 +360,12 @@ $total_pages = ceil($total_products / $per_page);
 
           <li class="nav-item d-flex align-items-center ms-2">
             <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
-              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
+              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i> 
+              <?php if ($cart_count > 0): ?>
+              <span class="position-absolute top-0 start-100 translate-middle cart-count-pill">
+                <?php echo $cart_count; ?>
+              </span>
+            <?php endif; ?>
             </a>
           </li>
 

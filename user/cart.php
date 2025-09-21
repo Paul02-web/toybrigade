@@ -209,16 +209,6 @@ $subtotal = 0;
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-          <li class="nav-item d-flex align-items-center">
-            <form id="navbarSearchForm" class="d-flex align-items-center">
-              <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
-                placeholder="Search...">
-              <button class="btn btn-pastel" type="button" id="searchToggle">
-                <i class="fas fa-search"></i>
-              </button>
-            </form>
-          </li>
-        </ul>
         
 
 
@@ -235,12 +225,6 @@ $subtotal = 0;
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
             </div>
-          </li>
-
-          <li class="nav-item d-flex align-items-center ms-2">
-            <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
-              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
-            </a>
           </li>
 
         <?php else: ?>
@@ -311,83 +295,100 @@ $subtotal = 0;
   <section class="cart-hero py-5">
     <div class="container text-center">
       <h1 class="section-title splice-text mb-2">Your Cart</h1>
-      <p class="text-muted mb-0">Review items, adjust quantities, and proceed to checkout.</p>
     </div>
   </section>
 
-  <!-- Cart Content -->
+   <!-- Cart Content -->
   <main class="container my-4">
-    <div class="row g-4">
-      <!-- Left: Items -->
-      <div class="col-12 col-lg-8">
-        <div class="card cart-card p-3">
-          <div id="cart-empty" class="text-center py-5 <?php echo $cart_count === 0 ? '' : 'd-none'; ?>">
-            <p class="mb-3">Your cart is empty.</p>
-            <a href="shop.php" class="btn btn-pastel">Continue Shopping</a>
-          </div>
+    <!-- Main checkout form -->
+    <form action="checkout.php" method="POST" id="cartForm">
+      <div class="row g-4">
+        <!-- Left: Items -->
+        <div class="col-12 col-lg-8">
+          <div class="card cart-card p-3">
+            <div id="cart-empty" class="text-center py-5 <?php echo $cart_count === 0 ? '' : 'd-none'; ?>">
+              <p class="mb-3">Your cart is empty.</p>
+              <a href="shop.php" class="btn btn-pastel">Continue Shopping</a>
+            </div>
 
-          <div id="cart-list">
             <?php if ($cart_count > 0): ?>
-              <?php foreach ($cart_items as $item): ?>
-                <?php 
-                $item_total = $item['price'] * $item['quantity'];
-                $subtotal += $item_total;
-                ?>
-                <div class="cart-item d-flex align-items-center border-bottom pb-3 mb-3">
-                  <img src="../images/products/<?php echo $item['prodImage']; ?>" alt="<?php echo $item['productName']; ?>" class="cart-img me-3">
-                  <div class="flex-grow-1">
-                    <h6 class="mb-1"><?php echo $item['productName']; ?></h6>
-                    <p class="mb-1 price-tag">₱<?php echo number_format($item['price'], 2); ?></p>
-                    <div class="d-flex align-items-center">
-                      <form method="POST" action="update_cart.php" class="d-flex align-items-center me-3">
-                        <input type="hidden" name="productID" value="<?php echo $item['productID']; ?>">
-                        <label for="qty-<?php echo $item['productID']; ?>" class="me-2">Qty:</label>
-                        <input type="number" id="qty-<?php echo $item['productID']; ?>" name="quantity" value="<?php echo $item['quantity']; ?>" min="1" class="form-control form-control-sm qty-input">
-                        <button type="submit" name="update_cart" class="btn btn-sm btn-outline-secondary ms-2">Update</button>
-                      </form>
-                      <form method="POST" action="delete_cart.php">
-                        <input type="hidden" name="productID" value="<?php echo $item['productID']; ?>">
-                        <button type="submit" name="delete_cart"class="btn btn-sm remove-link">Remove</button>
-                      </form>
+            <div class="form-check select-all">
+              <input class="form-check-input" type="checkbox" id="selectAll">
+              <label class="form-check-label" for="selectAll">
+                Select all items for checkout
+              </label>
+            </div>
+            <?php endif; ?>
+
+            <div id="cart-list">
+              <?php if ($cart_count > 0): ?>
+                <?php foreach ($cart_items as $item): ?>
+                  <?php 
+                  $item_total = $item['price'] * $item['quantity'];
+                  $subtotal += $item_total;
+                  ?>
+                  <div class="cart-item d-flex align-items-center border-bottom pb-3 mb-3">
+                    <input type="checkbox" class="form-check-input item-checkbox" name="selected_items[]" 
+                           value="<?php echo $item['productID']; ?>" data-price="<?php echo $item['price']; ?>" 
+                           data-quantity="<?php echo $item['quantity']; ?>">
+                    <img src="../images/products/<?php echo $item['prodImage']; ?>" alt="<?php echo $item['productName']; ?>" class="cart-img me-3">
+                    <div class="flex-grow-1">
+                      <h6 class="mb-1"><?php echo $item['productName']; ?></h6>
+                      <p class="mb-1 price-tag">₱<?php echo number_format($item['price'], 2); ?></p>
+                      <div class="d-flex align-items-center">
+                        <!-- Update form - placed outside the main form -->
+                        <div class="d-flex align-items-center me-3">
+                          <label for="qty-<?php echo $item['productID']; ?>" class="me-2">Qty:</label>
+                          <input type="number" id="qty-<?php echo $item['productID']; ?>" 
+                                 value="<?php echo $item['quantity']; ?>" min="1" class="form-control form-control-sm qty-input"
+                                 data-product-id="<?php echo $item['productID']; ?>">
+                          <button type="button" class="btn btn-sm btn-outline-secondary ms-2 update-cart-btn" 
+                                  data-product-id="<?php echo $item['productID']; ?>">Update</button>
+                        </div>
+                        <!-- Remove button -->
+                        <button type="button" class="btn btn-sm remove-link delete-cart-btn" 
+                                data-product-id="<?php echo $item['productID']; ?>">Remove</button>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <p class="mb-0 fw-bold">₱<?php echo number_format($item_total, 2); ?></p>
                     </div>
                   </div>
-                  <div class="text-end">
-                    <p class="mb-0 fw-bold">₱<?php echo number_format($item_total, 2); ?></p>
-                  </div>
-                </div>
-              <?php endforeach; ?>
-            <?php endif; ?>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right: Summary -->
-      <div class="col-12 col-lg-4">
-        <div class="card summary-card p-3">
-          <h5 class="mb-3">Order Summary</h5>
-          <div class="d-flex justify-content-between mb-2">
-            <span>Items Subtotal</span>
-            <span id="sum-subtotal">₱<?php echo number_format($subtotal, 2); ?></span>
+        <!-- Right: Summary -->
+        <div class="col-12 col-lg-4">
+          <div class="card summary-card p-3">
+            <h5 class="mb-3">Order Summary</h5>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Items Subtotal</span>
+              <span id="sum-subtotal">₱<?php echo number_format($subtotal, 2); ?></span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Shipping</span>
+              <span class="text-muted">Calculated at checkout</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between mb-3">
+              <strong>Total</strong>
+              <strong id="sum-total">₱<?php echo number_format($subtotal, 2); ?></strong>
+            </div>
+            <?php if ($cart_count > 0): ?>
+              <button type="submit" class="btn btn-pastel w-100" id="btn-checkout">Proceed to Checkout</button>
+            <?php else: ?>
+              <button class="btn btn-outline-secondary w-100" disabled>Proceed to Checkout</button>
+            <?php endif; ?>
+            <p class="small text-muted mt-2 mb-0">Note: Only selected items will be processed.</p>
           </div>
-          <div class="d-flex justify-content-between mb-2">
-            <span>Shipping</span>
-            <span class="text-muted">Calculated at checkout</span>
-          </div>
-          <hr />
-          <div class="d-flex justify-content-between mb-3">
-            <strong>Total</strong>
-            <strong id="sum-total">₱<?php echo number_format($subtotal, 2); ?></strong>
-          </div>
-          <?php if ($cart_count > 0): ?>
-            <a href="checkout.php" class="btn btn-pastel w-100" id="btn-checkout">Proceed to Checkout</a>
-          <?php else: ?>
-            <button class="btn btn-outline-secondary w-100" disabled>Proceed to Checkout</button>
-          <?php endif; ?>
-          <p class="small text-muted mt-2 mb-0">Note: This is a demo flow; payment will be simulated in sandbox.</p>
         </div>
       </div>
-    </div>
+    </form>
   </main>
+
 
   <!-- You Might Also Like (Recommendations) -->
   <!-- <section class="container my-5">
@@ -476,5 +477,104 @@ $subtotal = 0;
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Select all functionality
+    document.getElementById('selectAll')?.addEventListener('change', function() {
+      const checkboxes = document.querySelectorAll('.item-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+      });
+      updateCheckoutButton();
+    });
+
+    // Individual checkbox change
+    document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+      checkbox.addEventListener('change', updateCheckoutButton);
+    });
+
+    // Update checkout button state
+    function updateCheckoutButton() {
+      const checkboxes = document.querySelectorAll('.item-checkbox');
+      const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+      const checkoutBtn = document.getElementById('btn-checkout');
+      
+      if (anyChecked) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.classList.remove('btn-outline-secondary');
+        checkoutBtn.classList.add('btn-pastel');
+      } else {
+        checkoutBtn.disabled = true;
+        checkoutBtn.classList.remove('btn-pastel');
+        checkoutBtn.classList.add('btn-outline-secondary');
+      }
+    }
+
+    // Initialize button state
+    updateCheckoutButton();
+
+    // Update cart quantity functionality
+    document.querySelectorAll('.update-cart-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const productID = this.getAttribute('data-product-id');
+        const quantityInput = document.getElementById('qty-' + productID);
+        const quantity = quantityInput.value;
+        
+        // Create a form and submit it
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'update_cart.php';
+        
+        const productIDInput = document.createElement('input');
+        productIDInput.type = 'hidden';
+        productIDInput.name = 'productID';
+        productIDInput.value = productID;
+        
+        const quantityInputField = document.createElement('input');
+        quantityInputField.type = 'hidden';
+        quantityInputField.name = 'quantity';
+        quantityInputField.value = quantity;
+        
+        const updateCartInput = document.createElement('input');
+        updateCartInput.type = 'hidden';
+        updateCartInput.name = 'update_cart';
+        updateCartInput.value = '1';
+        
+        form.appendChild(productIDInput);
+        form.appendChild(quantityInputField);
+        form.appendChild(updateCartInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+      });
+    });
+
+    // Delete cart item functionality
+    document.querySelectorAll('.delete-cart-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const productID = this.getAttribute('data-product-id');
+        
+        // Create a form and submit it
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'delete_cart.php';
+        
+        const productIDInput = document.createElement('input');
+        productIDInput.type = 'hidden';
+        productIDInput.name = 'productID';
+        productIDInput.value = productID;
+        
+        const deleteCartInput = document.createElement('input');
+        deleteCartInput.type = 'hidden';
+        deleteCartInput.name = 'delete_cart';
+        deleteCartInput.value = '1';
+        
+        form.appendChild(productIDInput);
+        form.appendChild(deleteCartInput);
+        
+        document.body.appendChild(form);
+        form.submit();
+      });
+    });
+  </script>
 </body>
 </html>

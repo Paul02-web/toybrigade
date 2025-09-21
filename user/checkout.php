@@ -1,3 +1,43 @@
+<?php
+include "connection.php";
+include "auth_session.php";
+
+// Check if items were selected
+if (!isset($_POST['selected_items']) || empty($_POST['selected_items'])) {
+    header("Location: cart.php");
+    exit();
+}
+
+$selected_items = $_POST['selected_items'];
+$placeholders = implode(',', array_fill(0, count($selected_items), '?'));
+$types = str_repeat('i', count($selected_items));
+
+// Get selected cart items for the logged-in user
+$stmt = $conn->prepare("SELECT p.productID, p.productName, p.price, p.prodImage, c.quantity 
+                        FROM cart c 
+                        JOIN products p ON c.productID = p.productID 
+                        WHERE c.customerID = ? AND p.productID IN ($placeholders)");
+$params = array_merge([$_SESSION['customerID']], $selected_items);
+$stmt->bind_param(str_repeat('i', count($params)), ...$params);
+$stmt->execute();
+$cart_result = $stmt->get_result();
+$cart_items = $cart_result ? mysqli_fetch_all($cart_result, MYSQLI_ASSOC) : [];
+$cart_count = count($cart_items);
+$subtotal = 0;
+
+// Calculate subtotal
+foreach ($cart_items as $item) {
+    $subtotal += $item['price'] * $item['quantity'];
+}
+
+$customer_query = $conn->prepare("SELECT * FROM customer WHERE customerID = ?");
+$customer_query->bind_param("i", $_SESSION['customerID']);
+$customer_query->execute();
+$customer_result = $customer_query->get_result();
+$customer = $customer_result->fetch_assoc();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,10 +91,9 @@
             <a class="nav-link" href="./index.php"><span class="me-1">🏠</span>Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
+            <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
-
-          <!-- Categories Dropdown (kept) -->
+          <!-- Categories Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -66,6 +105,7 @@
               <li class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="category-earlydev.php">👶 Early Development Toys</a>
                 <ul class="dropdown-menu">
+
                   <!-- Subcategory 1 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Sensory & Baby Play</a>
@@ -75,7 +115,7 @@
                       <li><a class="dropdown-item" href="product-sensory-2.html">VTech Sit-to-Stand Walker</a></li>
                       <li><a class="dropdown-item" href="product-sensory-3.html">Bright Starts Tummy Time Mat</a></li>
                       <li><a class="dropdown-item" href="product-sensory-4.html">Infantino Multi Ball Set</a></li>
-                      <li><a class="dropdown-item" href="product-sensory-5.html">LeapFrog My Pal Scout</a></li>
+                      <li><a class="dropdown-item" href="product-sensory-5.html">LeapF Frog My Pal Scout</a></li>
                     </ul>
                   </li>
 
@@ -153,6 +193,7 @@
               <li class="dropdown-submenu">
                 <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
+
                   <!-- Subcategory 1 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Anime & Pop Culture</a>
@@ -164,6 +205,7 @@
                       <li><a class="dropdown-item" href="product-anime-5.html">Sailor Moon Wand</a></li>
                     </ul>
                   </li>
+
                   <!-- Subcategory 2 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Retro & Nostalgia</a>
@@ -175,6 +217,7 @@
                       <li><a class="dropdown-item" href="product-retro-5.html">Beanie Babies Collection</a></li>
                     </ul>
                   </li>
+
                   <!-- Subcategory 3 -->
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" href="#">Filipino Exclusives</a>
@@ -188,26 +231,14 @@
                   </li>
                 </ul>
               </li>
+
             </ul>
+          </li>
 
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-
-          <!-- Cart icon with badge (theme-matched) -->
-<li class="nav-item d-flex align-items-center ms-2">
-  <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
-    <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i>
-    <!-- Red badge dot -->
-    <span id="tb-cart-badge-wrap" class="tb-badge-dot d-none" aria-hidden="true">
-      <span id="tb-cart-badge" class="visually-hidden">0</span>
-    </span>
-  </a>
-</li>
-
-
-          <!-- Navbar search (kept) -->
           <li class="nav-item d-flex align-items-center">
             <form id="navbarSearchForm" class="d-flex align-items-center">
               <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
@@ -218,8 +249,26 @@
             </form>
           </li>
         </ul>
+        
 
-        <!-- Account dropdown (kept) -->
+
+          <?php if(isset($_SESSION['email'])): ?>
+          <!-- User Profile Dropdown (shown when logged in) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
+              <a class="dropdown-item" href="#"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            </div>
+          </li>
+
+        <?php else: ?>
+        <!-- Login/Signup Dropdown (shown when not logged in) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -227,16 +276,19 @@
           </a>
           <div class="dropdown-menu dropdown-menu-end p-4" style="min-width: 320px; overflow: hidden;"
             id="accountDropdownMenu">
+            <!-- Sliding container -->
             <div class="form-slider d-flex" style="width:200%; transition: transform 0.4s ease;">
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
-                <form id="loginForm">
-                  <div class="mb-3"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                <form id="loginForm" action="login.php" method="POST">  
+                  <div class="mb-3">
+                    <input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-3"><input type="password" class="form-control pastel-input" placeholder="Password"
-                      required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
+                  <div class="mb-3">
+                    <input type="password" class="form-control pastel-input" name="password" placeholder="Password" required>
+                  </div>
+                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
                     <span class="loading-text d-none">Loading...</span>
                   </button>
@@ -246,21 +298,22 @@
                   </div>
                 </form>
               </div>
+
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
-                <form id="signupForm">
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="First name"
+                <form id="signupForm" action="signup.php" method="POST"> 
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="fname" placeholder="First name" 
                       required></div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="Last name"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lname" placeholder="Last name" 
                       required></div>
-                  <div class="mb-2"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-2"><input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lytcard"
                       placeholder="Loyalty card number (optional)"></div>
-                  <div class="mb-2"><input type="password" class="form-control pastel-input" placeholder="Password"
+                  <div class="mb-2"><input type="password" class="form-control pastel-input" name="password" placeholder="Password"
                       required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
                     <span class="loading-text d-none">Creating...</span>
                   </button>
@@ -272,6 +325,7 @@
             </div>
           </div>
         </li>
+        <?php endif; ?>
       </div>
     </div>
   </nav>
@@ -299,47 +353,47 @@
           <!-- Step 1: Shipping -->
           <section id="step-1">
             <h5 class="mb-3">Shipping Details</h5>
-            <form id="shippingForm" novalidate>
+            <form id="shippingForm" method="POST" novalidate>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label">First name</label>
-                  <input type="text" class="form-control co-field" name="firstName" required>
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-control co-field" name="firstName" value="<?php echo $customer['fname']; ?>" required>
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label">Last name</label>
-                  <input type="text" class="form-control co-field" name="lastName" required>
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control co-field" name="lastName" value="<?php echo $customer['lname']; ?>" required>
                 </div>
-                <div class="col-12">
+                <div class="col-md-6">
                   <label class="form-label">Email</label>
-                  <input type="email" class="form-control co-field" name="email" required>
+                  <input type="email" class="form-control co-field" name="email" value="<?php echo $customer['email']; ?>" required>
                 </div>
-                <div class="col-12">
+                <div class="col-md-6">
                   <label class="form-label">Phone</label>
-                  <input type="tel" class="form-control co-field" name="phone" required>
+                  <input type="tel" class="form-control co-field" name="phone" value="<?php echo $customer['lytnumber']; ?>" required>
                 </div>
                 <div class="col-12">
                   <label class="form-label">Address</label>
-                  <input type="text" class="form-control co-field" name="address" required>
+                  <input type="text" class="form-control co-field" name="address" value="Default Address" required>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">City</label>
-                  <input type="text" class="form-control co-field" name="city" required>
+                  <input type="text" class="form-control co-field" name="city" value="Default City" required>
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Postal Code</label>
-                  <input type="text" class="form-control co-field" name="postal" required>
+                  <input type="text" class="form-control co-field" name="postal" value="0000" required>
                 </div>
                 <div class="col-12">
                   <label class="form-label">Shipping Method</label>
                   <select class="form-select co-field" name="shippingMethod" required>
-                    <option value="standard">Standard (₱150)</option>
-                    <option value="express">Express (₱350)</option>
+                    <option value="standard">Standard Shipping (₱150)</option>
+                    <option value="express">Express Shipping (₱350)</option>
                     <option value="pickup">Store Pickup (Free)</option>
                   </select>
                 </div>
-                <div class="col-12 d-flex justify-content-end">
-                  <button type="submit" class="btn btn-pastel">Continue to Payment</button>
-                </div>
+                <div class="col-12">
+              <div class="col-12">
+                <button type="submit" class="btn btn-pastel" id="continueToPayment">Continue to Payment</button>
               </div>
             </form>
           </section>
@@ -347,7 +401,7 @@
           <!-- Step 2: Payment -->
           <section id="step-2" class="d-none">
             <h5 class="mb-3">Payment</h5>
-            <form id="paymentForm" novalidate>
+            <form id="paymentForm" method="POST" novalidate>
               <div class="row g-3">
                 <div class="col-12">
                   <label class="form-label">Payment Method</label>
@@ -379,12 +433,26 @@
 
           <!-- Step 3: Review -->
           <section id="step-3" class="d-none">
-            <h5 class="mb-3">Review & Place Order</h5>
-            <div id="review-items" class="mb-3"></div>
-            <div class="d-flex justify-content-between">
-              <button type="button" class="btn btn-outline-secondary" id="backToPayment">Back</button>
-              <button type="button" class="btn btn-pastel" id="placeOrderBtn">Place Order</button>
-            </div>
+              <h5 class="mb-3">Review & Place Order</h5>
+              <form action="process_order.php" method="POST">
+                  <?php 
+                  $i = 0;
+                  foreach ($cart_items as $item): 
+                  ?>
+                      <input type="hidden" name="items[<?php echo $i; ?>][productID]" value="<?php echo $item['productID']; ?>">
+                      <input type="hidden" name="items[<?php echo $i; ?>][quantity]" value="<?php echo $item['quantity']; ?>">
+                      <input type="hidden" name="items[<?php echo $i; ?>][subtotal]" value="<?php echo $item['price'] * $item['quantity']; ?>">
+                  <?php 
+                  $i++;
+                  endforeach; 
+                  ?>
+                  <input type="hidden" name="total_amount" value="<?php echo $subtotal; ?>">
+                  <div id="review-items" class="mb-3"></div>
+                  <div class="d-flex justify-content-between">
+                      <button type="button" class="btn btn-outline-secondary" id="backToPayment">Back</button>
+                      <button type="submit" class="btn btn-pastel" name="place_order">Place Order</button>
+                  </div>
+              </form>
           </section>
         </div>
       </div>
@@ -393,11 +461,18 @@
       <div class="col-12 col-lg-4">
         <div class="card co-summary p-3">
           <h5 class="mb-3">Order Summary</h5>
-          <div id="sum-list" class="mb-2"></div>
-          <div class="d-flex justify-content-between"><span>Items Subtotal</span><span id="co-sub">₱0.00</span></div>
+          <div id="sum-list" class="mb-2">
+              <?php foreach ($cart_items as $item): ?>
+                  <div class="d-flex justify-content-between small mb-1" data-product-id="<?php echo $item['productID']; ?>">
+                      <span><?php echo $item['productName']; ?> (x<?php echo $item['quantity']; ?>)</span>
+                      <span>₱<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                  </div>
+              <?php endforeach; ?>
+          </div>
+          <div class="d-flex justify-content-between"><span>Items Subtotal</span><span id="co-sub">₱<?php echo number_format($subtotal, 2); ?></span></div>
           <div class="d-flex justify-content-between"><span>Shipping</span><span id="co-ship">—</span></div>
           <div class="co-divider my-2"></div>
-          <div class="d-flex justify-content-between"><strong>Total</strong><strong id="co-total">₱0.00</strong></div>
+          <div class="d-flex justify-content-between"><strong>Total</strong><strong id="co-total">₱<?php echo number_format($subtotal, 2); ?></strong></div>
           <div class="small text-muted mt-2">Sandbox checkout — no real charges.</div>
         </div>
       </div>
@@ -458,5 +533,8 @@
       </div>
     </div>
   </footer>
+
+  <script src="../js/checkout.js"></script>
+  <script src="../js/main.js"></script>
 </body>
 </html>

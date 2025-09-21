@@ -2,7 +2,7 @@
 include "connection.php";
 include "auth_session.php";
 
-if (isset($_POST['update_cart']) && isset($_POST['productID']) && isset($_POST['quantity'])) {
+if (isset($_POST['update_cart']) && isset($_POST['productID'])) {
     $productID = $_POST['productID'];
     $quantity = (int)$_POST['quantity'];
     
