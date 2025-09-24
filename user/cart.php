@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 include "connection.php";
 include "auth_session.php";
 
@@ -151,7 +150,7 @@ $subtotal = 0;
                     <a class="dropdown-item dropdown-toggle" href="#">Outdoor & Active Toys</a>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="product-outdoor-1.html">Nerf Elite Blaster</a></li>
-                      <li><a class="dropdown-item" href="product-outdoor-2.html">Slip 'N Slide Splash</a></li>
+                      <li><a class="dropdown-item" href="product-outdoor-2.html">Slip ‘N Slide Splash</a></li>
                       <li><a class="dropdown-item" href="product-outdoor-3.html">Razor A Kick Scooter</a></li>
                       <li><a class="dropdown-item" href="product-outdoor-4.html">Frisbee Ultimate Disc</a></li>
                       <li><a class="dropdown-item" href="product-outdoor-5.html">Little Tikes Climber</a></li>
@@ -184,7 +183,7 @@ $subtotal = 0;
                       <li><a class="dropdown-item" href="product-retro-1.html">Tamagotchi Original</a></li>
                       <li><a class="dropdown-item" href="product-retro-2.html">Polly Pocket Compact</a></li>
                       <li><a class="dropdown-item" href="product-retro-3.html">Game Boy Color</a></li>
-                      <li><a class="dropdown-item" href="product-retro-4.html">Rubik's Cube</a></li>
+                      <li><a class="dropdown-item" href="product-retro-4.html">Rubik’s Cube</a></li>
                       <li><a class="dropdown-item" href="product-retro-5.html">Beanie Babies Collection</a></li>
                     </ul>
                   </li>
@@ -361,7 +360,7 @@ $subtotal = 0;
           </div>
         </div>
 
-        
+        <!-- Right: Summary -->
         <div class="col-12 col-lg-4">
           <div class="card summary-card p-3">
             <h5 class="mb-3">Order Summary</h5>
@@ -378,20 +377,12 @@ $subtotal = 0;
               <strong>Total</strong>
               <strong id="sum-total">₱<?php echo number_format($subtotal, 2); ?></strong>
             </div>
-
             <?php if ($cart_count > 0): ?>
-              <button type="submit" class="btn btn-pastel w-100" id="btn-checkout" name="proceed_checkout">
-                Proceed to Checkout
-              </button>
+              <button type="submit" class="btn btn-pastel w-100" id="btn-checkout">Proceed to Checkout</button>
             <?php else: ?>
-              <button type="button" class="btn btn-outline-secondary w-100" disabled>
-                Proceed to Checkout
-              </button>
+              <button class="btn btn-outline-secondary w-100" disabled>Proceed to Checkout</button>
             <?php endif; ?>
-
-            <p class="small text-muted mt-2 mb-0">
-              Note: Only selected items will be processed.
-            </p>
+            <p class="small text-muted mt-2 mb-0">Note: Only selected items will be processed.</p>
           </div>
         </div>
       </div>
@@ -507,7 +498,7 @@ $subtotal = 0;
       const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
       const checkoutBtn = document.getElementById('btn-checkout');
       
-      if (anyChecked && <?php echo $cart_count > 0 ? 'true' : 'false'; ?>) {
+      if (anyChecked) {
         checkoutBtn.disabled = false;
         checkoutBtn.classList.remove('btn-outline-secondary');
         checkoutBtn.classList.add('btn-pastel');
@@ -517,25 +508,6 @@ $subtotal = 0;
         checkoutBtn.classList.add('btn-outline-secondary');
       }
     }
-
-    // Form submission handler
-    document.getElementById('cartForm')?.addEventListener('submit', function(e) {
-      const checkboxes = document.querySelectorAll('.item-checkbox:checked');
-      if (checkboxes.length === 0) {
-        e.preventDefault();
-        alert('Please select at least one item to proceed to checkout.');
-        return false;
-      }
-      
-      // Optional: Show loading state
-      const checkoutBtn = document.getElementById('btn-checkout');
-      if (checkoutBtn) {
-        checkoutBtn.innerHTML = 'Processing...';
-        checkoutBtn.disabled = true;
-      }
-      
-      return true;
-    });
 
     // Initialize button state
     updateCheckoutButton();
