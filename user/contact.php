@@ -1,8 +1,18 @@
 <?php
 include "connection.php";
+include "auth_session.php";
 
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$cart_count = 0;
+if (isset($_SESSION['email'])) {
+    $cart_count_query = "SELECT SUM(quantity) AS total FROM cart WHERE customerID = {$_SESSION['customerID']}";
+    $cart_count_result = mysqli_query($conn, $cart_count_query);
+    $cart_count_row = mysqli_fetch_assoc($cart_count_result);
+    $cart_count = $cart_count_row['total'] ?? 0;
+}
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +20,8 @@ include "connection.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toy Brigade | Shop</title>
+  <title>Contact Us - Toy Brigade</title>
+
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -21,31 +32,21 @@ include "connection.php";
 
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
-  <link rel="stylesheet" href="./css/shop.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/contact.css">
+  <link rel="stylesheet" href="../css/shop.css">
 
-
-  <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <!-- Themed Page Loading Spinner -->
-  <div id="spinner"
-    class="d-flex justify-content-center align-items-center vh-100 position-fixed top-0 start-0 w-100 h-100 bg-light"
-    style="z-index: 2000;">
-    <div class="pastel-spinner"></div>
-  </div>
-
-
-
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-pastel shadow-sm sticky-top playful-nav">
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo"> 
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -60,7 +61,6 @@ include "connection.php";
           <li class="nav-item">
             <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
-
           <!-- Categories Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
@@ -116,7 +116,7 @@ include "connection.php";
 
               <!-- Main Category 2 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-action.html">⚔️ Action & Adventure Toys</a>
+                <a class="dropdown-item dropdown-toggle" href="category-action.php">⚔️ Action & Adventure Toys</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -159,7 +159,7 @@ include "connection.php";
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -207,18 +207,35 @@ include "connection.php";
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-          <li class="nav-item d-flex align-items-center">
-            <form id="navbarSearchForm" class="d-flex align-items-center">
-              <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
-                placeholder="Search...">
-              <button class="btn btn-pastel" type="button" id="searchToggle">
-                <i class="fas fa-search"></i>
-              </button>
-            </form>
+
+          <?php if(isset($_SESSION['email'])): ?>
+          <!-- User Profile Dropdown (shown when logged in) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
+              <a class="dropdown-item" href="edit_profile.php"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            </div>
           </li>
-        </ul>
 
+          <li class="nav-item d-flex align-items-center ms-2">
+            <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
+              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i> 
+              <?php if ($cart_count > 0): ?>
+              <span class="position-absolute top-0 start-100 translate-middle cart-count-pill">
+                <?php echo $cart_count; ?>
+              </span>
+            <?php endif; ?>
+            </a>
+          </li>
 
+        <?php else: ?>
+        <!-- Login/Signup Dropdown (shown when not logged in) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -228,20 +245,18 @@ include "connection.php";
             id="accountDropdownMenu">
             <!-- Sliding container -->
             <div class="form-slider d-flex" style="width:200%; transition: transform 0.4s ease;">
-
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
-                <form id="loginForm">
+                <form id="loginForm" action="login.php" method="POST">  
                   <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                    <input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
                   <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
+                    <input type="password" class="form-control pastel-input" name="password" placeholder="Password" required>
                   </div>
-                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
-                    <span class="loading-text d-none">Loading...</span>
                   </button>
                   <div class="mt-2 text-center">
                     <small>New customer? <a href="#" id="showSignup">Create your account</a></small><br>
@@ -253,163 +268,84 @@ include "connection.php";
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
-                <form id="signupForm">
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="First name"
+                <form id="signupForm" action="signup.php" method="POST"> 
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="fname" placeholder="First name" 
                       required></div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="Last name"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lname" placeholder="Last name" 
                       required></div>
-                  <div class="mb-2"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-2"><input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lytcard"
                       placeholder="Loyalty card number (optional)"></div>
-                  <div class="mb-2"><input type="password" class="form-control pastel-input" placeholder="Password"
+                  <div class="mb-2"><input type="password" class="form-control pastel-input" name="password" placeholder="Password"
                       required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
-                    <span class="loading-text d-none">Creating...</span>
                   </button>
                   <div class="mt-2 text-center">
                     <small>Already have an account? <a href="#" id="showLogin">Login here</a></small>
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
         </li>
-
+        <?php endif; ?>
       </div>
     </div>
   </nav>
 
 
+  <!-- Hero Section -->
+  <section class="text-center py-5 bg-light">
+    <h1 class="fw-bold">📬 Contact Us</h1>
+    <p class="text-muted">We’d love to hear from you! Fill out the form or reach us directly.</p>
 
-  <!-- Shop Page -->
-  <!-- Hero Banner -->
-  <section class="shop-hero position-relative text-center text-white">
-    <img src="images/shop-hero.jpg" class="w-100 hero-img" alt="Shop Banner">
-
-    <!-- Angled overlay -->
-    <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
-
-    <div class="hero-text position-absolute top-50 start-50 translate-middle">
-      <h1 class="display-4 splice-text">Discover Our Toys</h1>
-      <p class="lead">Fun, playful, and full of imagination for every child</p>
-      <a href="#shop-categories" class="btn btn-pastel btn-lg mt-3">Shop Now</a>
-    </div>
   </section>
 
+  <!-- Contact Content -->
+  <section class="container my-5">
+    <div class="row g-4">
 
-
-  <section class="py-5" id="shop-categories" style="background-color: #fff5f8;">
-    <div class="container">
-
-      <!-- Section Header -->
-      <div class="text-center mb-5">
-        <h1 class="section-title splice-text">Shop by Category</h1>
-        <p class="text-muted">Find toys for every age, interest, and collector's passion</p>
-      </div>
-
-      <!-- Main Category 1: Early Development Toys -->
-      <h2 class="section-title splice-text mb-4">Early Development Toys</h2>
-      <div class="row mb-5">
-        <!-- Subcategory 1: Sensory & Baby Play -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm position-relative hover-scale">
-            <span class="badge bg-pink text-white position-absolute top-0 start-0 m-2">New</span>
-            <img src="images/categories/sensory.jpg" class="card-img-top" alt="Sensory & Baby Play">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Sensory & Baby Play</h5>
-              <a href="./category-earlydev.php#sensory" class="btn btn-pastel">Explore</a>
+      <!-- Contact Form -->
+      <div class="col-lg-6">
+        <div class="card shadow p-4 rounded-4 contact-card">
+          <h3 class="mb-3">Send us a message</h3>
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Your Name</label>
+              <input type="text" class="form-control rounded-3" placeholder="Enter your name">
             </div>
-          </div>
-        </div>
-
-        <!-- Subcategory 2: STEM & Learning Toys -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/stem.jpg" class="card-img-top" alt="STEM & Learning Toys">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">STEM & Learning</h5>
-              <a href="./category-earlydev.php#stem" class="btn btn-pastel">Explore</a>
+            <div class="mb-3">
+              <label class="form-label">Your Email</label>
+              <input type="email" class="form-control rounded-3" placeholder="Enter your email">
             </div>
-          </div>
-        </div>
-
-        <!-- Subcategory 3: Pretend Play & Roleplay -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/roleplay.jpg" class="card-img-top" alt="Pretend Play & Roleplay">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Pretend Play & Roleplay</h5>
-              <a href="./category-earlydev.php#pretendplay" class="btn btn-pastel">Explore</a>
+            <div class="mb-3">
+              <label class="form-label">Subject</label>
+              <input type="text" class="form-control rounded-3" placeholder="Subject">
             </div>
-          </div>
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea class="form-control rounded-3" rows="5" placeholder="Type your message"></textarea>
+            </div>
+            <button type="submit" class="contact-btn">Send Message</button>
+
+          </form>
         </div>
       </div>
 
-      <!-- Main Category 2: Action & Adventure Toys -->
-      <h2 class="section-title splice-text mb-4">Action & Adventure Toys</h2>
-      <div class="row mb-5">
-        <!-- Subcategories -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/action-figures.jpg" class="card-img-top" alt="Action Figures & Superheroes">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Action Figures & Superheroes</h5>
-              <a href="category-actionfigures.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/vehicles.jpg" class="card-img-top" alt="Vehicles & Playsets">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Vehicles & Playsets</h5>
-              <a href="category-vehicles.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/outdoor.jpg" class="card-img-top" alt="Outdoor & Active Toys">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Outdoor & Active Toys</h5>
-              <a href="category-outdoor.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main Category 3: Collector’s Vault -->
-      <h2 class="section-title splice-text mb-4">Collector’s Vault</h2>
-      <div class="row mb-5">
-        <!-- Subcategories -->
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/anime.jpg" class="card-img-top" alt="Anime & Pop Culture">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Anime & Pop Culture</h5>
-              <a href="category-anime.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/retro.jpg" class="card-img-top" alt="Retro & Nostalgia">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Retro & Nostalgia</h5>
-              <a href="category-retro.php" class="btn btn-pastel">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 mb-4">
-          <div class="card category-card shadow-sm hover-scale">
-            <img src="images/categories/filipino.jpg" class="card-img-top" alt="Filipino Collector's Exclusives">
-            <div class="card-body text-center">
-              <h5 class="card-title splice-text">Filipino Exclusives</h5>
-              <a href="category-filipino.php" class="btn btn-pastel">Explore</a>
-            </div>
+      <!-- Contact Info -->
+      <div class="col-lg-6 ">
+        <div class="card shadow p-4 rounded-4 contact-card-2">
+          <h3 class="mb-3">Get in Touch</h3>
+          <p><strong>📍 Address:</strong> 123 Toy Street, Playtown, PH</p>
+          <p><strong>📞 Phone:</strong> +63 912 345 6789</p>
+          <p><strong>✉️ Email:</strong> support@siatoybrigade.com</p>
+          <div class="mt-4">
+            <iframe
+              src="https://www.google.com/maps/place/Toy+Kingdom+-+SM+North+Edsa/@14.6568205,121.0278747,17z/data=!3m1!4b1!4m6!3m5!1s0x3397b6e2dcf2ade9:0xf4ee6827acaa43ae!8m2!3d14.6568153!4d121.0304496!16s%2Fg%2F1hhxq4_z3?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D">
+              width="100% height="250" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
           </div>
         </div>
       </div>
@@ -424,7 +360,7 @@ include "connection.php";
 
         <!-- Logo & About -->
         <div class="col-md-3 footer-card text-center text-md-start">
-          <img src="images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
+          <img src="../images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
           <p class="small text-muted">Bringing joy and play to every child with toys made for fun and imagination.</p>
         </div>
 
@@ -471,9 +407,6 @@ include "connection.php";
     </div>
   </footer>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./js/main.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,15 @@
 <?php
 include "connection.php";
+include "auth_session.php";
 
-
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$cart_count = 0;
+if (isset($_SESSION['email'])) {
+    $cart_count_query = "SELECT SUM(quantity) AS total FROM cart WHERE customerID = {$_SESSION['customerID']}";
+    $cart_count_result = mysqli_query($conn, $cart_count_query);
+    $cart_count_row = mysqli_fetch_assoc($cart_count_result);
+    $cart_count = $cart_count_row['total'] ?? 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,27 +30,20 @@ include "connection.php";
 
 
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/shop.css">
 
 </head>
 
 <body>
-  <!-- Themed Page Loading Spinner -->
-  <div id="spinner"
-    class="d-flex justify-content-center align-items-center vh-100 position-fixed top-0 start-0 w-100 h-100 bg-light"
-    style="z-index: 2000;">
-    <div class="pastel-spinner"></div>
-  </div>
-
-
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-pastel shadow-sm sticky-top playful-nav">
     <div class="container">
       <!-- Bigger Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="images/logo2.png" alt="Toy Brigade Logo" class="logo">
+        <img src="../images/logo2.png" alt="Toy Brigade Logo" class="logo"> 
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
@@ -57,7 +58,6 @@ include "connection.php";
           <li class="nav-item">
             <a class="nav-link" href="./shop.php"><span class="me-1">🛒</span>Shop</a>
           </li>
-
           <!-- Categories Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown"
@@ -156,7 +156,7 @@ include "connection.php";
 
               <!-- Main Category 3 -->
               <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="category-collectors.html">🎴 Collector's Vault</a>
+                <a class="dropdown-item dropdown-toggle" href="category-collectors.php">🎴 Collector's Vault</a>
                 <ul class="dropdown-menu">
 
                   <!-- Subcategory 1 -->
@@ -204,18 +204,35 @@ include "connection.php";
           <li class="nav-item">
             <a class="nav-link" href="./contact.php"><i class="fas fa-phone me-1"></i>Contact</a>
           </li>
-          <li class="nav-item d-flex align-items-center">
-            <form id="navbarSearchForm" class="d-flex align-items-center">
-              <input class="form-control pastel-input me-2 collapse" id="navbarSearchInput" type="search"
-                placeholder="Search...">
-              <button class="btn btn-pastel" type="button" id="searchToggle">
-                <i class="fas fa-search"></i>
-              </button>
-            </form>
+
+          <?php if(isset($_SESSION['email'])): ?>
+          <!-- User Profile Dropdown (shown when logged in) -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              👤 <?php echo $_SESSION['fname'] . ' ' . $_SESSION['lname']; ?>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end p-3" style="min-width: 200px;" id="userDropdownMenu">
+              <a class="dropdown-item" href="edit_profile.php"><i class="fas fa-user-edit me-2"></i>Edit Profile</a>
+              <a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Wishlist</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+            </div>
           </li>
-        </ul>
 
+          <li class="nav-item d-flex align-items-center ms-2">
+            <a href="cart.php" class="nav-link position-relative tb-cart-link" aria-label="Cart">
+              <i class="fas fa-shopping-cart fa-lg tb-cart-icon"></i> 
+              <?php if ($cart_count > 0): ?>
+              <span class="position-absolute top-0 start-100 translate-middle cart-count-pill">
+                <?php echo $cart_count; ?>
+              </span>
+            <?php endif; ?>
+            </a>
+          </li>
 
+        <?php else: ?>
+        <!-- Login/Signup Dropdown (shown when not logged in) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -228,16 +245,15 @@ include "connection.php";
               <!-- Login Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Login to your account</h6>
-                <form id="loginForm">
+                <form id="loginForm" action="login.php" method="POST">  
                   <div class="mb-3">
-                    <input type="email" class="form-control pastel-input" placeholder="Email" required>
+                    <input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
                   <div class="mb-3">
-                    <input type="password" class="form-control pastel-input" placeholder="Password" required>
+                    <input type="password" class="form-control pastel-input" name="password" placeholder="Password" required>
                   </div>
-                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="loginBtn" name="loginBtn">
                     <span class="default-text">Login</span>
-                    <span class="loading-text d-none">Loading...</span>
                   </button>
                   <div class="mt-2 text-center">
                     <small>New customer? <a href="#" id="showSignup">Create your account</a></small><br>
@@ -249,32 +265,29 @@ include "connection.php";
               <!-- Signup Panel -->
               <div class="form-panel" style="width:50%;">
                 <h6 class="dropdown-header">Create my account</h6>
-                <form id="signupForm">
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="First name"
+                <form id="signupForm" action="signup.php" method="POST"> 
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="fname" placeholder="First name" 
                       required></div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input" placeholder="Last name"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lname" placeholder="Last name" 
                       required></div>
-                  <div class="mb-2"><input type="email" class="form-control pastel-input" placeholder="Email" required>
+                  <div class="mb-2"><input type="email" class="form-control pastel-input" name="email" placeholder="Email" required>
                   </div>
-                  <div class="mb-2"><input type="text" class="form-control pastel-input"
+                  <div class="mb-2"><input type="text" class="form-control pastel-input" name="lytcard"
                       placeholder="Loyalty card number (optional)"></div>
-                  <div class="mb-2"><input type="password" class="form-control pastel-input" placeholder="Password"
+                  <div class="mb-2"><input type="password" class="form-control pastel-input" name="password" placeholder="Password"
                       required></div>
-                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn">
+                  <button type="submit" class="btn btn-pastel w-100" id="signupBtn" name="signupBtn">
                     <span class="default-text">Create account</span>
-                    <span class="loading-text d-none">Creating...</span>
                   </button>
                   <div class="mt-2 text-center">
                     <small>Already have an account? <a href="#" id="showLogin">Login here</a></small>
                   </div>
                 </form>
               </div>
-
-
             </div>
           </div>
         </li>
-
+        <?php endif; ?>
       </div>
     </div>
   </nav>
@@ -294,13 +307,13 @@ include "connection.php";
     <!-- Slides -->
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="images/baby-playing.svg" class="d-block w-100" alt="Toy Image 1">
+        <img src="../images/baby-playing.svg" class="d-block w-100" alt="Toy Image 1">
       </div>
       <div class="carousel-item">
-        <img src="images/kids-playing-toys.svg" class="d-block w-100" alt="Toy Image 2">
+        <img src="../images/kids-playing-toys.svg" class="d-block w-100" alt="Toy Image 2">
       </div>
       <div class="carousel-item">
-        <img src="images/toy-store.svg" class="d-block w-100" alt="Toy Image 3">
+        <img src="../images/toy-store.svg" class="d-block w-100" alt="Toy Image 3">
       </div>
     </div>
 
@@ -347,13 +360,13 @@ include "connection.php";
 
         <!-- Image Column (Collage, Magazine-Style) -->
         <div class="col-lg-6 d-flex flex-wrap justify-content-center gap-3 mission-images-wrapper">
-          <img src="./images/pup-toy-baby.svg" alt="Toy Play" class="img-fluid rounded-4 shadow angled-mission"
+          <img src="../images/pup-toy-baby.svg" alt="Toy Play" class="img-fluid rounded-4 shadow angled-mission"
             style="width: 48%;">
-          <img src="images/mission-2.png" alt="Learning Toy" class="img-fluid rounded-4 shadow angled-mission"
+          <img src="../images/mission-2.png" alt="Learning Toy" class="img-fluid rounded-4 shadow angled-mission"
             style="width: 48%;">
-          <img src="images/mission-3.png" alt="Collectibles" class="img-fluid rounded-4 shadow angled-mission"
+          <img src="../images/mission-3.png" alt="Collectibles" class="img-fluid rounded-4 shadow angled-mission"
             style="width: 48%;">
-          <img src="images/mission-4.png" alt="Adventure" class="img-fluid rounded-4 shadow angled-mission"
+          <img src="../images/mission-4.png" alt="Adventure" class="img-fluid rounded-4 shadow angled-mission"
             style="width: 48%;">
         </div>
 
@@ -375,7 +388,7 @@ include "connection.php";
         <!-- Featured Category -->
         <div class="col-lg-7 featured-wrapper">
           <div class="card h-100 text-center shadow category-card featured-card">
-            <img src="images/baby-playing.svg" class="card-img-top" alt="Early Development Toys">
+            <img src="../images/baby-playing.svg" class="card-img-top" alt="Early Development Toys">
             <div class="card-body">
               <h5 class="card-title display-6">Early Development Toys</h5>
               <p class="card-text">Fun and educational toys for toddlers to spark curiosity and learning.</p>
@@ -388,7 +401,7 @@ include "connection.php";
         <div class="col-lg-5 d-flex flex-column justify-content-between small-cards-wrapper">
 
           <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/iron-man-figure.svg" class="card-img-top" alt="Action & Adventure Toys">
+            <img src="../images/iron-man-figure.svg" class="card-img-top" alt="Action & Adventure Toys">
             <div class="card-body">
               <h5 class="card-title">Action & Adventure Toys</h5>
               <a href="#" class="btn btn-pastel">Browse</a>
@@ -396,7 +409,7 @@ include "connection.php";
           </div>
 
           <div class="card h-50 text-center shadow category-card angled-card">
-            <img src="images/collectors.jpg" class="card-img-top" alt="Collector’s Vault">
+            <img src="../images/collectors.jpg" class="card-img-top" alt="Collector’s Vault">
             <div class="card-body">
               <h5 class="card-title">Collector’s Vault</h5>
               <a href="#" class="btn btn-pastel">Browse</a>
@@ -416,7 +429,7 @@ include "connection.php";
 
         <!-- Logo & About -->
         <div class="col-md-3 footer-card text-center text-md-start">
-          <img src="images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
+          <img src="../images/logo.png" alt="Toy Brigade Logo" class="footer-logo mb-2">
           <p class="small text-muted">Bringing joy and play to every child with toys made for fun and imagination.</p>
         </div>
 
@@ -465,7 +478,30 @@ include "connection.php";
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="./js/main.js"></script>
+    
+    <script>
+      // CODE FOR THE REDIRECT CART
+      function redirectCart() {
+          // Check if the user is logged in
+          if(!"<?php echo isset($_SESSION["username"]) ? $_SESSION["username"] : '' ?>") {
+              // Redirect the user to the login page
+              alert("You are not logged in. Please log into your account and try again.");
+          }
+      }
+  </script> 
+  <script src="../js/main.js"></script>
 </body>
 
 </html>
+
+  <?php
+//   echo '<script>';
+// if(!isset($_SESSION['user_email'])) {
+//     // Redirect the user to the login page
+//     echo "alert('You are not logged in. Please log into your account and try again.')";
+// }
+// else{
+//   echo'href="./shop.php"';
+// }
+// echo '</script>';
+  ?>

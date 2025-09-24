@@ -221,3 +221,11 @@
   color: #999;
   font-style: italic;
 }
+.cart-count {
+  background: black;      /* no background */
+  color: black;        /* inherit navbar/cart color */
+  font-size: 0.8rem;     /* adjust size */
+  font-weight: 500;      /* clean medium weight */
+  padding: 0;            /* no pill spacing */
+  border-radius: 0;      /* remove pill shape */
+}
