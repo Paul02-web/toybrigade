@@ -440,4 +440,56 @@ body.dark-mode table thead {
         padding: 4px 8px;
         font-size: 0.8rem;
     }
+} 
+.navbar-brand img {
+  height: 38px; /* keep logo consistent size */
+  border-radius: 8px; /* optional, if you want a soft look */
+}
+
+.navbar-brand span {
+  font-size: 1.05rem;
+  color: #444; /* matches your pastel theme text */
+} 
+ 
+/* Pastel header */
+.bg-light-pink {
+  background: linear-gradient(90deg, #ffe5ec, #ffccd5);
+}
+
+/* Table styling */
+.table th {
+  font-weight: 600;
+  color: #444;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Buttons */
+.btn-outline-primary {
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background: #cce5ff;
+  border-color: #99ccff;
+}
+
+.btn-outline-danger {
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background: #ffd6d6;
+  border-color: #ff9999;
+}
+.logo {
+  height: 500px;   /* adjust to fit navbar */
+  width: auto;    /* keeps aspect ratio */
+  object-fit: contain;
 }

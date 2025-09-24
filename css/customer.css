@@ -1,0 +1,67 @@
+/* ==========================
+   Customer Dashboard Styles
+   ========================== */
+
+/* Logo sizing */
+.logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Card layout */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Table styles */
+.table-container {
+  margin-top: 15px;
+}
+
+.table thead th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background: #f3f6fa;
+}
+
+/* Action buttons */
+.btn-action {
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-action i {
+  font-size: 1rem;
+}
+
+.btn-edit {
+  color: #0d6efd;
+}
+
+.btn-edit:hover {
+  color: #0a58ca;
+  transform: scale(1.1);
+}
+
+.btn-delete {
+  color: #dc3545;
+}
+
+.btn-delete:hover {
+  color: #bb2d3b;
+  transform: scale(1.1);
+}
+
+/* Modal headers */
+.modal-header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}

@@ -322,3 +322,8 @@ body {
   }
 }
 
+.logo {
+  height: 60px;   /* adjust to fit navbar */
+  width: auto;    /* keeps aspect ratio */
+  object-fit: contain;
+}

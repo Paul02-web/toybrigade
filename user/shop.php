@@ -432,7 +432,7 @@ $total_pages = ceil($total_products / $per_page);
 
   <!-- Hero (unchanged) -->
   <section class="shop-hero position-relative text-center text-white">
-    <img src="../images/KAZUYAMISHIMA.jpg" class="w-100 hero-img" alt="Shop Banner" />
+    <img src="../images/ShopBanner.png" class="w-10 hero-img" alt="Shop Banner" />
     <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
     <div class="hero-text position-absolute top-50 start-50 translate-middle">
       <h1 class="display-4 splice-text">Discover Our Toys</h1>
